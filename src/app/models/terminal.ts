@@ -1,32 +1,19 @@
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { WebLinksAddon } from 'xterm-addon-web-links';
+import { TabIcon } from './tab';
 
 export class TerminalModel {
     id: string;
     terminal: Terminal;
     fitAddon: FitAddon;
+    title: string;
+    icon: TabIcon;
 
     constructor() {
-
-        this.callbacks = callbacks;
-
-        let background;
-        [this.root, background] = Terminal.generateComponent(profile);
-        if (background) {
-            this.element.appendChild(background);
-        }
-        this.element.appendChild(this.root);
-
-        this.hyperlinkModifiers = profile.terminalSettings.hyperlinkModifier
-            .toLowerCase()
-            .replaceAll(" ", "")
-            .split("+")
-            .filter((m) => m !== "");
-
-        const theme = structuredClone(profile.theme);
-        if (profile.backgroundTransparency < 100) {
-            theme.background = "rgba(0,0,0,0)";
-        }
+        this.id = crypto.randomUUID().toString();
+        this.title = 'Powershell';
+        this.icon = 'powershell';
 
         this.terminal = new Terminal({
             // linkHandler: {
@@ -35,7 +22,7 @@ export class TerminalModel {
             //     leave: () => this.onLinkLeaved(),
             // },
             allowProposedApi: true,
-            fontFamily: "Fira Code, monospace",
+            fontFamily: 'Fira Code, monospace',
             allowTransparency: true,
             fontSize: 12,
             drawBoldTextInBrightColors: true,
@@ -48,51 +35,62 @@ export class TerminalModel {
             fontWeightBold: 6 * 100,
             ignoreBracketedPasteMode: !true,
             minimumContrastRatio: 1,
-            theme,
         });
 
         this.fitAddon = new FitAddon();
 
-        this.xterm.loadAddon(this.fitAddon);
-        this.xterm.loadAddon(new CanvasAddon());
-        this.xterm.loadAddon(
-            new WebLinksAddon((e, uri) => this.onLinkClicked(e, uri), {
-                hover: (_, uri, range) => this.onLinkHovered(uri, range),
-                leave: () => this.onLinkLeaved(),
-            })
-        );
+        this.terminal.loadAddon(this.fitAddon);
+        this.terminal.loadAddon(new WebLinksAddon());
 
-        this.xterm.onData((data) =>
-            this.dispatchEvent(new CustomEvent("data", { detail: data }))
+        this.terminal.onData((data) =>
+            // this.dispatchEvent(new CustomEvent("data", { detail: data }))
+            {},
         );
-        this.xterm.onScroll(() => this.disposeTooltip());
+        this.terminal.onScroll(() => {});
 
-        this.xterm.attachCustomKeyEventHandler((e) =>
-            this.callbacks.keyPress(e)
-        );
-        this.xterm.attachCustomWheelEventHandler((e) => {
-            if (
-                ((this.xterm.buffer.active.viewportY <
-                    this.xterm.buffer.active.baseY &&
-                    e.deltaY > 0) ||
-                    (this.xterm.buffer.active.viewportY > 0 && e.deltaY < 0)) &&
-                this.tooltip
-            ) {
-                this.disposeTooltip();
-            }
+        this.terminal.attachCustomKeyEventHandler((e) => {
+            console.log(e.key);
+
             return true;
         });
 
-        const onRender = this.xterm.onRender(() =>
-            setTimeout(() => {
-                this.resizeXterm();
-            }, 0)
-        );
-        const onResize = this.xterm.onResize(() => {
-            onRender.dispose();
-            onResize.dispose();
-        });
+        // const onRender = this.terminal.onRender(() =>
+        //     setTimeout(() => {
+        //         this.resizeXterm();
+        //     }, 0),
+        // );
+        // const onResize = this.terminal.onResize(() => {
+        //     onRender.dispose();
+        //     onResize.dispose();
+        // });
 
-        this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
+        // this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
     }
+
+    clone() {
+        const newTerminal: TerminalModel = new TerminalModel();
+        newTerminal.id = crypto.randomUUID().toString();
+        newTerminal.title = this.title;
+        newTerminal.icon = this.icon;
+
+        newTerminal.terminal = this.terminal;
+        return newTerminal;
+    }
+
+    dispose(): void {
+        this.terminal?.dispose();
+    }
+
+    // private resizeXterm() {
+    //     this.disposeTooltip();
+    //     const dimensions = this.fitAddon.proposeDimensions();
+    //     if (dimensions?.cols && dimensions.rows) {
+    //         this.terminal.resize(dimensions.cols, dimensions.rows);
+    //         this.dispatchEvent(
+    //             new CustomEvent("resize", {
+    //                 detail: dimensions,
+    //             })
+    //         );
+    //     }
+    // }
 }

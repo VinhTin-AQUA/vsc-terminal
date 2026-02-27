@@ -1,3 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'xterm/css/xterm.css';
+
+
+.tree-item {
+    --line-color: white;
+    --line-size: 2px;
+
+    position: relative;
+    padding-left: 16px; /* khoảng cách cho line */
+}
+
+/* đường dọc */
+.tree-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--line-size);
+    background-color: var(--line-color);
+}
+
+/* đường ngang */
+.tree-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: var(--line-size);
+    background-color: var(--line-color);
+}
+
+/* item đầu: chỉ vẽ từ giữa xuống */
+.tree-item:first-child::after {
+    top: 50%;
+}
+
+/* item cuối: chỉ vẽ từ trên xuống giữa */
+.tree-item:last-child::after {
+    bottom: 50%;
+}

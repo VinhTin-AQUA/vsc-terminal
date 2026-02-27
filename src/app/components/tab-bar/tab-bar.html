@@ -1,0 +1,77 @@
+<aside class="w-52 bg-gray-800 text-white overflow-auto h-full p-2">
+    <ul class="space-y-1">
+        @for (tab of tabManagerService.tabs(); track $index) {
+            <li class="mb-1">
+                <!-- SINGLE TERMINAL -->
+                @if (tab.terminals.length === 1) {
+                    <div
+                        class="group flex items-center justify-between text-[0.8rem] pr-2 ml-2 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                    >
+                        <span class="truncate">
+                            {{ tab.terminals[0].title }}
+                        </span>
+
+                        <div
+                            class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition"
+                        >
+                            <button
+                                (click)="
+                                    tabManagerService.removeTerminal(tab.id, tab.terminals[0].id)
+                                "
+                                class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                            >
+                                ✕
+                            </button>
+
+                            <button
+                                (click)="
+                                    tabManagerService.splitTerminal(tab.id, tab.terminals[0].id)
+                                "
+                                class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                            >
+                                ⊕
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <!-- MULTIPLE TERMINALS -->
+                @if (tab.terminals.length > 1) {
+                    <ul class="ml-3 mt-1 space-y-1">
+                        @for (terminal of tab.terminals; track $index) {
+                            <li
+                                class="tree-item group flex items-center justify-between text-[0.8rem] px-3 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                            >
+                                <span class="truncate">
+                                    {{ terminal.title }}
+                                </span>
+
+                                <div
+                                    class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition"
+                                >
+                                    <button
+                                        (click)="
+                                            tabManagerService.removeTerminal(tab.id, terminal.id)
+                                        "
+                                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                    >
+                                        ✕
+                                    </button>
+
+                                    <button
+                                        (click)="
+                                            tabManagerService.splitTerminal(tab.id, terminal.id)
+                                        "
+                                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                    >
+                                        ⊕
+                                    </button>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+</aside>
