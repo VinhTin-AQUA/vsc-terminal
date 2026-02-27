@@ -109,6 +109,19 @@ export class TerminalModel {
         });
         newTerminal.terminal.writeln(newTerminal.id);
         newTerminal.terminal.write('$ ');
+
+        newTerminal.fitAddon = new FitAddon();
+
+        newTerminal.terminal.loadAddon(this.fitAddon);
+        newTerminal.terminal.loadAddon(new WebLinksAddon());
+
+        newTerminal.terminal.onData((data) =>
+            // this.dispatchEvent(new CustomEvent("data", { detail: data }))
+            {
+                this.handleInput(data);
+            },
+        );
+        newTerminal.terminal.onScroll(() => {});
         return newTerminal;
     }
 
