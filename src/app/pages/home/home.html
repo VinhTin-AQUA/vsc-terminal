@@ -5,8 +5,27 @@
     <!-- Main Layout -->
     <div class="flex flex-1 overflow-hidden">
         <!-- Content  -->
-        <main class="flex-1 bg-gray-100 overflow-auto">
-            <app-term-view></app-term-view>
+        <main class="flex-1 bg-gray-100 overflow-hidden">
+            @for (tab of tabManager.tabs(); track tab.id) {
+                @if (tabManager.activatedTabId() === tab.id) {
+                    @if (tab.terminals.length === 1) {
+                        <app-term-view [terminal]="tab.terminals[0]" [tabId]="tab.id">
+                        </app-term-view>
+                    } @else if (tab.terminals.length > 1) {
+                        <div
+                            class="grid w-full h-full bg-red-400"
+                            [ngStyle]="{
+                                'grid-template-columns': gridTemplateColumns(tab.terminals.length),
+                            }"
+                        >
+                            @for (terminal of tab.terminals; track terminal.id) {
+                                <app-term-view [terminal]="terminal" [tabId]="tab.id">
+                                </app-term-view>
+                            }
+                        </div>
+                    }
+                }
+            }
         </main>
 
         <!-- Sidebar -->

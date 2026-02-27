@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
+import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { TerminalModel } from '../../models/terminal';
+import { TabManagerService } from '../../services/tab-manager.service';
 
 @Component({
     selector: 'app-term-view',
@@ -12,28 +12,30 @@ export class TermView {
     @ViewChild('terminalContainer', { static: true })
     terminalContainer!: ElementRef<HTMLDivElement>;
 
-    private terminal!: Terminal;
-    private fitAddon!: FitAddon;
+    @Input({ required: true }) terminal!: TerminalModel;
+    @Input() tabId!: string;
 
-    ngAfterViewInit(): void {
-        this.terminal = new Terminal({
-            cursorBlink: true,
-            theme: {
-                background: '#000000',
-            },
-        });
+    tabManager = inject(TabManagerService);
 
-        this.fitAddon = new FitAddon();
-        this.terminal.loadAddon(this.fitAddon);
-
-        this.terminal.open(this.terminalContainer.nativeElement);
-        this.fitAddon.fit();
-
-        this.terminal.writeln('🚀 Angular + xterm.js ready!');
-        this.terminal.write('$ ');
+    constructor() {
     }
 
-    ngOnDestroy(): void {
-        this.terminal?.dispose();
+    private viewInitialized = false;
+
+    ngAfterViewInit(): void {
+        this.viewInitialized = true;
+        this.tryInitTerminal();
+    }
+
+    ngOnChanges(): void {
+        this.tryInitTerminal();
+    }
+
+    private tryInitTerminal() {
+        if (!this.viewInitialized) return;
+        // if (this.terminal.initialized) return;
+
+        this.terminal.open(this.terminalContainer.nativeElement);
+        this.tabManager.markInitialized(this.tabId, this.terminal);
     }
 }

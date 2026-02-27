@@ -10,35 +10,13 @@ import { TerminalModel } from '../../models/terminal';
     styleUrl: './tab-bar.css',
 })
 export class TabBar {
-    // tabs: Tab[] = [
-    //     {
-    //         id: crypto.randomUUID().toString(),
-    //         terminals: [
-    //             new TerminalModel(),
-    //         ]
-    //     },
-    //     {
-    //         id: crypto.randomUUID().toString(),
-    //         terminals: [
-    //             new TerminalModel(),
-    //             new TerminalModel(),
-    //             new TerminalModel(),
-    //         ]
-    //     },
-    //        {
-    //         id: crypto.randomUUID().toString(),
-    //         terminals: [
-    //             new TerminalModel(),
-    //         ]
-    //     },
-    // ];
-
-
     constructor(public tabManagerService: TabManagerService) {
-        effect(() => {
-            const t = this.tabManagerService.tabs();
-        })
+        // effect(() => {
+        //     const t = this.tabManagerService.tabs();
+        // });
     }
 
-
+    setActivatedTerminalModel(tab: Tab, t: TerminalModel) {
+        this.tabManagerService.setActivatedTerminalModel(tab.id, t);
+    }
 }

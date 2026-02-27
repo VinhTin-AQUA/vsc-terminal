@@ -6,6 +6,7 @@
                 @if (tab.terminals.length === 1) {
                     <div
                         class="group flex items-center justify-between text-[0.8rem] pr-2 ml-2 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                        (click)="setActivatedTerminalModel(tab, tab.terminals[0])"
                     >
                         <span class="truncate">
                             {{ tab.terminals[0].title }}
@@ -41,6 +42,7 @@
                         @for (terminal of tab.terminals; track $index) {
                             <li
                                 class="tree-item group flex items-center justify-between text-[0.8rem] px-3 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                                (click)="setActivatedTerminalModel(tab, terminal)"
                             >
                                 <span class="truncate">
                                     {{ terminal.title }}
