@@ -20,22 +20,25 @@ export class TermView {
     constructor() {
     }
 
-    private viewInitialized = false;
+    // private viewInitialized = false;
 
     ngAfterViewInit(): void {
-        this.viewInitialized = true;
-        this.tryInitTerminal();
-    }
-
-    ngOnChanges(): void {
-        this.tryInitTerminal();
-    }
-
-    private tryInitTerminal() {
-        if (!this.viewInitialized) return;
-        // if (this.terminal.initialized) return;
-
+        // this.viewInitialized = true;
+        // this.tryInitTerminal();
+        console.log(123);
+        
         this.terminal.open(this.terminalContainer.nativeElement);
-        this.tabManager.markInitialized(this.tabId, this.terminal);
     }
+
+    // ngOnChanges(): void {
+    //     this.tryInitTerminal();
+    // }
+
+    // private tryInitTerminal() {
+    //     if (!this.viewInitialized) return;
+    //     // if (this.terminal.initialized) return;
+
+    //     this.terminal.open(this.terminalContainer.nativeElement);
+    //     this.tabManager.markInitialized(this.tabId, this.terminal);
+    // }
 }

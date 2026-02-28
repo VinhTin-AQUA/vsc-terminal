@@ -1,22 +1,34 @@
 import { Injectable, signal } from '@angular/core';
 import { Tab } from '../models/tab';
 import { TerminalModel } from '../models/terminal';
+import { invoke } from '@tauri-apps/api/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TabManagerService {
-    defaultTab = new Tab();
-    tabs = signal<Tab[]>([this.defaultTab]);
-    activatedTabId = signal<string>(this.defaultTab.id);
-    activatedTerminalId = signal<string>(this.defaultTab.terminals[0].id);
+    tabs = signal<Tab[]>([]);
+    activatedTabId = signal<string>('');
+    activatedTerminalId = signal<string>('');
 
-    constructor() {}
+    constructor() {
+        const defaultTab = new Tab();
+        this.tabs.update((x) => {
+            return [defaultTab];
+        });
 
-    addTab(tab: Tab) {
+        this.activatedTabId = signal<string>(defaultTab.id);
+        this.activatedTerminalId = signal<string>(defaultTab.terminals[0].id);
+
+        invoke('create_terminal', { terminalId: defaultTab.terminals[0].id });
+    }
+
+    async addTab(tab: Tab) {
         this.tabs.update((x) => {
             return [...x, tab];
         });
+        this.setActivatedTerminalModel(tab.id, tab.terminals[0]);
+        await invoke('create_terminal', { terminalId: tab.terminals[0].id });
     }
 
     splitTerminal(tabId: string, terminalId: string) {
@@ -25,10 +37,7 @@ export class TabManagerService {
 
         const terminal = tab.terminals.find((x) => x.id === terminalId);
         if (!terminal) return;
-
         const newTerminal = terminal.clone();
-        console.log(terminal.id);
-        console.log(newTerminal.id);
 
         this.tabs.update((tabs) =>
             tabs.map((tab) =>
@@ -40,6 +49,13 @@ export class TabManagerService {
                     : tab,
             ),
         );
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const tab = this.tabs().find((tab) => tab.id === tabId);
+                tab?.terminals.forEach((t) => t.fitAddon.fit());
+            });
+        });
     }
 
     removeTerminal(tabId: string, terminalId: string) {
@@ -95,6 +111,15 @@ export class TabManagerService {
         this.activatedTabId.set(tabId);
         this.activatedTerminalId.set(t.id);
         this.markInitialized(tabId, t);
+
+        // const tab = this.tabs().find((tab) => tab.id === tabId);
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const tab = this.tabs().find((tab) => tab.id === tabId);
+                tab?.terminals.forEach((t) => t.fitAddon.fit());
+            });
+        });
     }
 
     markInitialized(id: string, terminal: TerminalModel) {

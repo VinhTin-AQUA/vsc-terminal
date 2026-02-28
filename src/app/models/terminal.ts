@@ -2,6 +2,8 @@ import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { TabIcon } from './tab';
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 
 export class TerminalModel {
     id: string;
@@ -67,6 +69,11 @@ export class TerminalModel {
         this.terminal.writeln(this.id);
         this.terminal.write('$ ');
 
+        listen('terminal-output', (event: any) => {
+            const [terminalId, data] = event.payload;
+            this.terminal.write('$ ' + data)
+        });
+
         // const onRender = this.terminal.onRender(() =>
         //     setTimeout(() => {
         //         this.resizeXterm();
@@ -130,8 +137,9 @@ export class TerminalModel {
         this.fitAddon.fit();
     }
 
-    dispose(): void {
+    async dispose() {
         this.terminal?.dispose();
+        await invoke('close_terminal', { terminalId: this.id });
     }
 
     // private resizeXterm() {
@@ -147,17 +155,22 @@ export class TerminalModel {
     //     }
     // }
 
-    private handleInput(data: string) {
+    private async handleInput(data: string) {
         switch (data) {
             // ENTER
             case '\r':
                 console.log('Command:', this.currentLine);
+                await invoke('write_terminal', { terminalId: this.id, data: this.currentLine });
+
+
                 this.history.push(this.currentLine);
                 this.historyIndex = this.history.length;
 
                 this.currentLine = '';
                 this.cursorPosition = 0;
                 this.printPrompt();
+               
+                
                 break;
 
             // BACKSPACE
