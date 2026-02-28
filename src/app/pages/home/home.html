@@ -7,13 +7,13 @@
         <!-- Content  -->
         <main class="flex-1 bg-gray-100 overflow-hidden">
             @for (tab of tabManager.tabs(); track tab.id) {
-                @if (tabManager.activatedTabId() === tab.id) {
+                <div class="w-full h-full" [class.hidden]="tabManager.activatedTabId() !== tab.id">
                     @if (tab.terminals.length === 1) {
                         <app-term-view [terminal]="tab.terminals[0]" [tabId]="tab.id">
                         </app-term-view>
                     } @else if (tab.terminals.length > 1) {
                         <div
-                            class="grid w-full h-full bg-red-400"
+                            class="grid w-full h-full"
                             [ngStyle]="{
                                 'grid-template-columns': gridTemplateColumns(tab.terminals.length),
                             }"
@@ -24,7 +24,7 @@
                             }
                         </div>
                     }
-                }
+                </div>
             }
         </main>
 

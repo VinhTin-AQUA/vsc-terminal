@@ -1,34 +1,32 @@
-<aside class="w-52 bg-gray-800 text-white overflow-auto h-full p-2">
-    <ul class="space-y-1">
+<aside class="w-52 bg-gray-800 text-white overflow-auto h-full">
+    <ul class="">
         @for (tab of tabManagerService.tabs(); track $index) {
-            <li class="mb-1">
+            <li class="">
                 <!-- SINGLE TERMINAL -->
                 @if (tab.terminals.length === 1) {
                     <div
-                        class="group flex items-center justify-between text-[0.8rem] pr-2 ml-2 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                        class="flex items-center justify-between text-[0.8rem] ps-2 py-1 pe-1 rounded-md cursor-pointer hover:bg-gray-700"
+                        [ngClass]="{
+                            'bg-gray-600':
+                                tabManagerService.activatedTerminalId() === tab.terminals[0].id,
+                        }"
                         (click)="setActivatedTerminalModel(tab, tab.terminals[0])"
                     >
                         <span class="truncate">
                             {{ tab.terminals[0].title }}
                         </span>
 
-                        <div
-                            class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition"
-                        >
+                        <div class="flex items-center transition">
                             <button
-                                (click)="
-                                    tabManagerService.removeTerminal(tab.id, tab.terminals[0].id)
-                                "
-                                class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                (click)="removeTerminal($event, tab, tab.terminals[0])"
+                                class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
                             >
                                 ✕
                             </button>
 
                             <button
-                                (click)="
-                                    tabManagerService.splitTerminal(tab.id, tab.terminals[0].id)
-                                "
-                                class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                (click)="splitTerminal($event, tab, tab.terminals[0])"
+                                class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
                             >
                                 ⊕
                             </button>
@@ -38,33 +36,31 @@
 
                 <!-- MULTIPLE TERMINALS -->
                 @if (tab.terminals.length > 1) {
-                    <ul class="ml-3 mt-1 space-y-1">
+                    <ul class="">
                         @for (terminal of tab.terminals; track $index) {
                             <li
-                                class="tree-item group flex items-center justify-between text-[0.8rem] px-3 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                                class="tree-item flex items-center justify-between text-[0.8rem] ps-5 pe-1 py-1 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                                [ngClass]="{
+                                    'bg-gray-600':
+                                        tabManagerService.activatedTerminalId() === terminal.id,
+                                }"
                                 (click)="setActivatedTerminalModel(tab, terminal)"
                             >
                                 <span class="truncate">
                                     {{ terminal.title }}
                                 </span>
 
-                                <div
-                                    class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition"
-                                >
+                                <div class="flex items-center transition">
                                     <button
-                                        (click)="
-                                            tabManagerService.removeTerminal(tab.id, terminal.id)
-                                        "
-                                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                        (click)="removeTerminal($event, tab, terminal)"
+                                        class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
                                     >
                                         ✕
                                     </button>
 
                                     <button
-                                        (click)="
-                                            tabManagerService.splitTerminal(tab.id, terminal.id)
-                                        "
-                                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                        (click)="splitTerminal($event, tab, terminal)"
+                                        class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
                                     >
                                         ⊕
                                     </button>

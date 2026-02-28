@@ -126,9 +126,8 @@ export class TerminalModel {
     }
 
     open(el: HTMLDivElement) {
-        console.log(123);
-
         this.terminal.open(el);
+        this.fitAddon.fit();
     }
 
     dispose(): void {
