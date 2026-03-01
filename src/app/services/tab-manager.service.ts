@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Tab } from '../models/tab';
 import { TerminalModel } from '../models/terminal';
 import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 
 @Injectable({
     providedIn: 'root',
@@ -21,6 +22,18 @@ export class TabManagerService {
         this.activatedTerminalId = signal<string>(defaultTab.terminals[0].id);
 
         invoke('create_terminal', { terminalId: defaultTab.terminals[0].id });
+
+        listen('terminal-output', (event: any) => {
+            const [terminalId, data] = event.payload;
+
+            const terminal = this.tabs()
+                .flatMap((c) => c.terminals)
+                .find((s) => s.id === terminalId);
+
+            if (!terminal) return;
+
+            terminal.terminal.write(data)
+        });
     }
 
     async addTab(tab: Tab) {
@@ -31,7 +44,7 @@ export class TabManagerService {
         await invoke('create_terminal', { terminalId: tab.terminals[0].id });
     }
 
-    splitTerminal(tabId: string, terminalId: string) {
+    async splitTerminal(tabId: string, terminalId: string) {
         const tab = this.tabs().find((x) => x.id === tabId);
         if (!tab) return;
 
@@ -49,6 +62,8 @@ export class TabManagerService {
                     : tab,
             ),
         );
+
+        await invoke('create_terminal', { terminalId: newTerminal.id });
 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {

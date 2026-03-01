@@ -20,16 +20,19 @@ impl TerminalSession {
             })
             .unwrap();
 
-        #[cfg(target_os = "windows")]
-        let shell = "powershell.exe";
+        // #[cfg(target_os = "windows")]
+        // let shell = "powershell.exe";
 
-        #[cfg(not(target_os = "windows"))]
-        let shell = "bash";
+        // #[cfg(not(target_os = "windows"))]
+        // let shell = "/usr/bin/zsh";
+        // let shell = "/bin/bash";
 
-        let mut child = pair
-            .slave
-            .spawn_command(CommandBuilder::new(shell))
-            .unwrap();
+        let shell_path = Self::get_default_shell().unwrap_or("".to_string());
+        let shell = CommandBuilder::new(shell_path);
+
+        println!("shell = {:?}", shell);
+
+        let mut child = pair.slave.spawn_command(shell.clone()).unwrap();
 
         let mut reader = pair.master.try_clone_reader().unwrap();
         let writer = pair.master.take_writer().unwrap();
@@ -61,9 +64,9 @@ impl TerminalSession {
         // Nếu data đã có newline rồi thì không thêm nữa
         let mut final_data = data.to_string();
 
-        if !final_data.ends_with('\n') {
-            final_data.push_str(newline);
-        }
+        // if !final_data.ends_with('\n') {
+        //     final_data.push_str(newline);
+        // }
 
         if let Err(e) = self.writer.write_all(final_data.as_bytes()) {
             eprintln!("Write error: {:?}", e);
@@ -78,5 +81,35 @@ impl TerminalSession {
 
     pub fn resize(&mut self, cols: u16, rows: u16) {
         // resize xử lý ở manager (cần giữ master handle nếu muốn chuẩn hơn)
+    }
+
+    pub fn get_default_shell() -> Option<String> {
+        #[cfg(target_os = "windows")]
+        {
+            // Ưu tiên COMSPEC
+            if let Ok(shell) = env::var("COMSPEC") {
+                return Some(shell);
+            }
+
+            // Fallback phổ biến
+            if let Ok(system_root) = env::var("SystemRoot") {
+                return Some(format!(r"{}\System32\cmd.exe", system_root));
+            }
+
+            None
+        }
+
+        #[cfg(not(target_os = "windows"))]
+        {
+            // Ưu tiên SHELL
+
+            use std::env;
+            if let Ok(shell) = env::var("SHELL") {
+                return Some(shell);
+            }
+
+            // Fallback an toàn
+            Some("/bin/sh".to_string())
+        }
     }
 }

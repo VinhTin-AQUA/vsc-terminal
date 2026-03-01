@@ -25,8 +25,6 @@ export class TermView {
     ngAfterViewInit(): void {
         // this.viewInitialized = true;
         // this.tryInitTerminal();
-        console.log(123);
-        
         this.terminal.open(this.terminalContainer.nativeElement);
     }
 
