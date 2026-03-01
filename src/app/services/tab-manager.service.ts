@@ -14,6 +14,7 @@ export class TabManagerService {
 
     constructor() {
         const defaultTab = new Tab();
+        defaultTab.terminals[0].active = true;
         this.tabs.update((x) => {
             return [defaultTab];
         });
@@ -25,7 +26,6 @@ export class TabManagerService {
 
         listen('terminal-output', (event: any) => {
             const [terminalId, data] = event.payload;
-
             const terminal = this.tabs()
                 .flatMap((c) => c.terminals)
                 .find((s) => s.id === terminalId);
@@ -127,7 +127,19 @@ export class TabManagerService {
         this.activatedTerminalId.set(t.id);
         this.markInitialized(tabId, t);
 
-        // const tab = this.tabs().find((tab) => tab.id === tabId);
+        this.tabs.update((tabs) =>
+            tabs.map((tab) =>
+                tab.id === tabId
+                    ? {
+                          ...tab,
+                          terminals: tab.terminals.map(x => {
+                            x.active = false
+                            return x
+                          }),
+                      }
+                    : tab,
+            ),
+        );
 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {

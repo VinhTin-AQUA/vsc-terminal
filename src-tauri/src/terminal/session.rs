@@ -1,10 +1,11 @@
-use portable_pty::{native_pty_system, CommandBuilder, PtySize};
+use portable_pty::{native_pty_system, CommandBuilder, MasterPty, PtySize};
 use std::io::{Read, Write};
 use std::thread;
 use tauri::{AppHandle, Emitter};
 
 pub struct TerminalSession {
     pub writer: Box<dyn Write + Send>,
+    pub master: Box<dyn MasterPty + Send>,
 }
 
 impl TerminalSession {
@@ -29,13 +30,11 @@ impl TerminalSession {
 
         let shell_path = Self::get_default_shell().unwrap_or("".to_string());
         let shell = CommandBuilder::new(shell_path);
-
-        println!("shell = {:?}", shell);
-
         let mut child = pair.slave.spawn_command(shell.clone()).unwrap();
 
         let mut reader = pair.master.try_clone_reader().unwrap();
         let writer = pair.master.take_writer().unwrap();
+        let master = pair.master;
 
         // Spawn thread đọc output
         let app_clone = app.clone();
@@ -44,6 +43,7 @@ impl TerminalSession {
             loop {
                 match reader.read(&mut buf) {
                     Ok(n) if n > 0 => {
+                        println!("hehe");
                         let data = String::from_utf8_lossy(&buf[..n]).to_string();
                         app_clone
                             .emit("terminal-output", (tab_id.clone(), data))
@@ -54,7 +54,7 @@ impl TerminalSession {
             }
         });
 
-        TerminalSession { writer }
+        TerminalSession { writer, master }
     }
 
     pub fn write(&mut self, data: &str) {

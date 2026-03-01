@@ -23,13 +23,13 @@ export class TabBar {
 
     removeTerminal(event: Event, tab: Tab, terminal: TerminalModel) {
         event.stopPropagation();
-          event.preventDefault();
+        event.preventDefault();
         this.tabManagerService.removeTerminal(tab.id, terminal.id);
     }
 
     splitTerminal(event: Event, tab: Tab, terminal: TerminalModel) {
         event.stopPropagation();
-          event.preventDefault();
+        event.preventDefault();
         this.tabManagerService.splitTerminal(tab.id, terminal.id);
     }
 }

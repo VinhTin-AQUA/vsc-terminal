@@ -3,6 +3,7 @@ import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { TabIcon } from './tab';
 import { invoke } from '@tauri-apps/api/core';
+import { debounceTime, Subject } from 'rxjs';
 
 export class TerminalModel {
     id: string;
@@ -10,19 +11,15 @@ export class TerminalModel {
     fitAddon: FitAddon;
     title: string;
     icon: TabIcon;
-    initialized: boolean;
-
-    private prompt = '';
-    private currentLine = '';
-    private history: string[] = [];
-    private historyIndex = -1;
-    private cursorPosition = 0;
+    active: boolean;
+    private resizeObserver: ResizeObserver;
+    private resizeSubject = new Subject<void>();
 
     constructor() {
         this.id = crypto.randomUUID().toString();
         this.title = 'Powershell';
         this.icon = 'powershell';
-        this.initialized = false;
+        this.active = false;
 
         this.terminal = new Terminal({
             // linkHandler: {
@@ -50,12 +47,24 @@ export class TerminalModel {
         this.terminal.loadAddon(this.fitAddon);
         this.terminal.loadAddon(new WebLinksAddon());
 
-        this.terminal.onData((data) =>
-            {
-                this.handleInput(data);
-            },
-        );
+        this.terminal.onData((data) => {
+            this.handleInput(data);
+        });
         this.terminal.onScroll(() => {});
+
+        this.resizeSubject.pipe(debounceTime(150)).subscribe(() => {
+
+            if (this.active === false) {
+                this.active = true
+                this.fitAddon.fit();
+
+                invoke('resize_terminal', {
+                    terminalId: this.id,
+                    cols: this.terminal.cols,
+                    rows: this.terminal.rows,
+                });
+            }
+        });
 
         // this.terminal.attachCustomKeyEventHandler((e) => {
         //     console.log(e.key);
@@ -63,79 +72,45 @@ export class TerminalModel {
         //     return true;
         // });
 
-        // this.terminal.writeln(this.id);
-
-        // const onRender = this.terminal.onRender(() =>
-        //     setTimeout(() => {
-        //         this.resizeXterm();
-        //     }, 0),
-        // );
-        // const onResize = this.terminal.onResize(() => {
-        //     onRender.dispose();
-        //     onResize.dispose();
-        // });
-
-        // this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
+        this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
     }
 
     clone() {
         const newTerminal: TerminalModel = new TerminalModel();
         newTerminal.id = crypto.randomUUID().toString();
-        newTerminal.title = this.title;
-        newTerminal.icon = this.icon;
 
-        newTerminal.terminal = new Terminal({
-            // linkHandler: {
-            //     activate: (e, uri) => this.onLinkClicked(e, uri),
-            //     hover: (_, uri, range) => this.onLinkHovered(uri, range),
-            //     leave: () => this.onLinkLeaved(),
-            // },
-            allowProposedApi: this.terminal.options.allowProposedApi,
-            fontFamily: this.terminal.options.fontFamily,
-            allowTransparency: this.terminal.options.allowTransparency,
-            fontSize: this.terminal.options.fontSize,
-            drawBoldTextInBrightColors: this.terminal.options.drawBoldTextInBrightColors,
-            cursorBlink: this.terminal.options.cursorBlink,
-            scrollback: this.terminal.options.scrollback,
-            lineHeight: this.terminal.options.lineHeight,
-            cursorStyle: this.terminal.options.cursorStyle,
-            letterSpacing: this.terminal.options.letterSpacing,
-            fontWeight: this.terminal.options.fontWeight,
-            fontWeightBold: this.terminal.options.fontWeightBold,
-            ignoreBracketedPasteMode: this.terminal.options.ignoreBracketedPasteMode,
-            minimumContrastRatio: this.terminal.options.minimumContrastRatio,
-        });
-
-        newTerminal.fitAddon = new FitAddon();
-
-        newTerminal.terminal.loadAddon(this.fitAddon);
-        newTerminal.terminal.loadAddon(new WebLinksAddon());
-
-        newTerminal.terminal.onData((data) =>
-            // this.dispatchEvent(new CustomEvent("data", { detail: data }))
-            {
-                // this.handleInput(data);
-                invoke('write_terminal', {
-                    terminalId: this.id,
-                    data: data, // gửi raw keystroke
-                });
-            },
-        );
-        newTerminal.terminal.onScroll(() => {});
         return newTerminal;
     }
 
     open(el: HTMLDivElement) {
         this.terminal.open(el);
         this.fitAddon.fit();
+
+        this.resizeObserver = new ResizeObserver(() => {
+            this.resizeSubject.next();
+        });
+
+        this.resizeObserver.observe(el);
     }
 
     async dispose() {
         this.terminal?.dispose();
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
         await invoke('close_terminal', { terminalId: this.id });
     }
 
     private async handleInput(data: string) {
         await invoke('write_terminal', { terminalId: this.id, data: data });
+    }
+
+    private resizeXterm() {
+        // const dimensions = this.fitAddon.proposeDimensions();
+        // if (dimensions?.cols && dimensions.rows) {
+        //     this.terminal.resize(dimensions.cols, dimensions.rows);
+        // }
+
+        this.fitAddon.fit();
     }
 }

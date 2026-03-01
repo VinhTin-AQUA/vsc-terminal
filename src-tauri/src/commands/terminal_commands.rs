@@ -7,13 +7,12 @@ pub fn create_terminal(terminal_id: String) {
 
 #[tauri::command]
 pub fn write_terminal(terminal_id: String, data: String) {
-    println!("data = {:?}", data);
     manager::write(terminal_id, data);
 }
 
 #[tauri::command]
 pub fn resize_terminal(terminal_id: String, cols: u16, rows: u16) {
-    // có thể implement thêm
+    manager::resize_terminal(terminal_id, cols, rows);
 }
 
 #[tauri::command]
