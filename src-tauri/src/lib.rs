@@ -11,9 +11,9 @@ pub fn run() {
                         .level(log::LevelFilter::Info)
                         .build(),
                 )?;
-
-                terminal::manager::init(app.handle().clone());
             }
+
+            terminal::manager::init(app.handle().clone());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

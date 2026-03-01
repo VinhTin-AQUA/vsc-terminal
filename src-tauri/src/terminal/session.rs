@@ -1,6 +1,6 @@
 use portable_pty::{native_pty_system, CommandBuilder, MasterPty, PtySize};
 use std::io::{Read, Write};
-use std::thread;
+use std::{env, thread};
 use tauri::{AppHandle, Emitter};
 
 pub struct TerminalSession {
@@ -28,26 +28,37 @@ impl TerminalSession {
         // let shell = "/usr/bin/zsh";
         // let shell = "/bin/bash";
 
-        let shell_path = Self::get_default_shell().unwrap_or("".to_string());
-        let shell = CommandBuilder::new(shell_path);
-        let mut child = pair.slave.spawn_command(shell.clone()).unwrap();
+        let (shell, args) = Self::get_shell_and_args();
+        let mut cmd = CommandBuilder::new(shell);
+
+        for arg in args {
+            cmd.arg(arg);
+        }
+        // ===== FIX APPIMAGE ISSUES =====
+        #[cfg(not(target_os = "windows"))]
+        {
+            cmd.env_remove("PYTHONHOME");
+            cmd.env_remove("PYTHONPATH");
+            cmd.env("TERM", "xterm-256color");
+        }
+
+        let _child = pair
+            .slave
+            .spawn_command(cmd)
+            .expect("Failed to spawn shell");
 
         let mut reader = pair.master.try_clone_reader().unwrap();
         let writer = pair.master.take_writer().unwrap();
         let master = pair.master;
 
-        // Spawn thread đọc output
         let app_clone = app.clone();
         thread::spawn(move || {
             let mut buf = [0u8; 4096];
             loop {
                 match reader.read(&mut buf) {
                     Ok(n) if n > 0 => {
-                        println!("hehe");
                         let data = String::from_utf8_lossy(&buf[..n]).to_string();
-                        app_clone
-                            .emit("terminal-output", (tab_id.clone(), data))
-                            .unwrap();
+                        let _ = app_clone.emit("terminal-output", (tab_id.clone(), data));
                     }
                     _ => break,
                 }
@@ -58,15 +69,7 @@ impl TerminalSession {
     }
 
     pub fn write(&mut self, data: &str) {
-        // Xác định newline theo OS
-        let newline = if cfg!(windows) { "\r\n" } else { "\n" };
-
-        // Nếu data đã có newline rồi thì không thêm nữa
-        let mut final_data = data.to_string();
-
-        // if !final_data.ends_with('\n') {
-        //     final_data.push_str(newline);
-        // }
+        let final_data = data.to_string();
 
         if let Err(e) = self.writer.write_all(final_data.as_bytes()) {
             eprintln!("Write error: {:?}", e);
@@ -80,36 +83,63 @@ impl TerminalSession {
     }
 
     pub fn resize(&mut self, cols: u16, rows: u16) {
-        // resize xử lý ở manager (cần giữ master handle nếu muốn chuẩn hơn)
+        let _ = self.master.resize(PtySize {
+            rows,
+            cols,
+            pixel_width: 0,
+            pixel_height: 0,
+        });
     }
 
-    pub fn get_default_shell() -> Option<String> {
+    pub fn get_default_shell() -> String {
         #[cfg(target_os = "windows")]
         {
-            // Ưu tiên COMSPEC
-            if let Ok(shell) = env::var("COMSPEC") {
-                return Some(shell);
+            if let Ok(shell) = std::env::var("COMSPEC") {
+                return shell;
             }
-
-            // Fallback phổ biến
-            if let Ok(system_root) = env::var("SystemRoot") {
-                return Some(format!(r"{}\System32\cmd.exe", system_root));
-            }
-
-            None
+            return "cmd.exe".to_string();
         }
 
-        #[cfg(not(target_os = "windows"))]
+        #[cfg(target_os = "macos")]
         {
-            // Ưu tiên SHELL
-
-            use std::env;
-            if let Ok(shell) = env::var("SHELL") {
-                return Some(shell);
+            if let Ok(shell) = std::env::var("SHELL") {
+                return shell;
             }
+            return "/bin/zsh".to_string();
+        }
 
-            // Fallback an toàn
-            Some("/bin/sh".to_string())
+        #[cfg(all(unix, not(target_os = "macos")))]
+        {
+            if let Ok(shell) = std::env::var("SHELL") {
+                return shell;
+            }
+            return "/bin/bash".to_string();
+        }
+    }
+
+    pub fn get_shell_and_args() -> (String, Vec<String>) {
+        #[cfg(target_os = "windows")]
+        {
+            if let Ok(comspec) = std::env::var("COMSPEC") {
+                return (comspec, vec![]);
+            }
+            return ("cmd.exe".to_string(), vec![]);
+        }
+
+        #[cfg(target_os = "macos")]
+        {
+            if let Ok(shell) = std::env::var("SHELL") {
+                return (shell, vec!["-l".into(), "-i".into()]);
+            }
+            return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
+        }
+
+        #[cfg(all(unix, not(target_os = "macos")))]
+        {
+            if let Ok(shell) = std::env::var("SHELL") {
+                return (shell, vec!["-l".into(), "-i".into()]);
+            }
+            return ("/bin/bash".to_string(), vec!["-l".into(), "-i".into()]);
         }
     }
 }

@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "identifier": "com.newtun.vscterminal",
     "build": {
-        "frontendDist": "../dist",
+        "frontendDist": "../dist/vsc-terminal/browser",
         "devUrl": "http://localhost:4200",
         "beforeDevCommand": "ng s",
         "beforeBuildCommand": "ng build"
