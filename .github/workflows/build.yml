@@ -168,7 +168,7 @@ jobs:
                   tag_name: ${{ env.TAG_NAME }}
                   generate_release_notes: true
                   files: |
-                      artifacts/linux-build/${{ env.DEB_FILE_NAME }}
-                      artifacts/linux-build/${{ env.RPM_FILE_NAME }}
-                      artifacts/linux-build/${{ env.APPIMAGE_FILE_NAME }}
+                      artifacts/linux-build/deb/${{ env.DEB_FILE_NAME }}
+                      artifacts/linux-build/rpm/${{ env.RPM_FILE_NAME }}
+                      artifacts/linux-build/appimage/${{ env.APPIMAGE_FILE_NAME }}
                       artifacts/windows-build/${{ env.EXE_FILE_NAME }}
