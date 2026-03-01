@@ -41,7 +41,7 @@ export class TerminalModel {
             fontWeightBold: 6 * 100,
             ignoreBracketedPasteMode: !true,
             minimumContrastRatio: 1,
-            convertEol: true,
+            convertEol: false,
         });
 
         this.fitAddon = new FitAddon();
@@ -64,6 +64,14 @@ export class TerminalModel {
                     rows: this.terminal.rows,
                 });
             }
+        });
+
+        this.terminal.onResize(({ cols, rows }) => {
+            invoke('resize_terminal', {
+                terminalId: this.id,
+                cols: cols,
+                rows: rows,
+            });
         });
 
         // this.terminal.attachCustomKeyEventHandler((e) => {

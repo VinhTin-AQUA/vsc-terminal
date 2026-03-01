@@ -47,6 +47,8 @@ impl TerminalSession {
             .spawn_command(cmd)
             .expect("Failed to spawn shell");
 
+        drop(pair.slave); // QUAN TRỌNG
+
         let mut reader = pair.master.try_clone_reader().unwrap();
         let writer = pair.master.take_writer().unwrap();
         let master = pair.master;
