@@ -53,17 +53,27 @@ export class TerminalModel {
         });
         this.terminal.onScroll(() => {});
 
-        this.resizeSubject.pipe(debounceTime(150)).subscribe(() => {
-            if (this.active === false) {
-                this.active = true;
-                this.fitAddon.fit();
+        // this.resizeSubject.pipe(debounceTime(150)).subscribe(() => {
+        //     if (this.active === false) {
+        //         this.active = true;
+        //         this.fitAddon.fit();
 
-                invoke('resize_terminal', {
-                    terminalId: this.id,
-                    cols: this.terminal.cols,
-                    rows: this.terminal.rows,
-                });
-            }
+        //         invoke('resize_terminal', {
+        //             terminalId: this.id,
+        //             cols: this.terminal.cols,
+        //             rows: this.terminal.rows,
+        //         });
+        //     }
+        // });
+
+        this.resizeSubject.pipe(debounceTime(100)).subscribe(() => {
+            this.fitAddon.fit();
+
+            invoke('resize_terminal', {
+                terminalId: this.id,
+                cols: this.terminal.cols,
+                rows: this.terminal.rows,
+            });
         });
 
         this.terminal.onResize(({ cols, rows }) => {
@@ -91,8 +101,24 @@ export class TerminalModel {
     }
 
     open(el: HTMLDivElement) {
+        // this.terminal.open(el);
+        // this.fitAddon.fit();
+
+        // this.resizeObserver = new ResizeObserver(() => {
+        //     this.resizeSubject.next();
+        // });
+
+        // this.resizeObserver.observe(el);
+
         this.terminal.open(el);
+
         this.fitAddon.fit();
+
+        invoke('resize_terminal', {
+            terminalId: this.id,
+            cols: this.terminal.cols,
+            rows: this.terminal.rows,
+        });
 
         this.resizeObserver = new ResizeObserver(() => {
             this.resizeSubject.next();
