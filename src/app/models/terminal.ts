@@ -41,6 +41,7 @@ export class TerminalModel {
             fontWeightBold: 6 * 100,
             ignoreBracketedPasteMode: !true,
             minimumContrastRatio: 1,
+            convertEol: true,
         });
 
         this.fitAddon = new FitAddon();
@@ -53,9 +54,8 @@ export class TerminalModel {
         this.terminal.onScroll(() => {});
 
         this.resizeSubject.pipe(debounceTime(150)).subscribe(() => {
-
             if (this.active === false) {
-                this.active = true
+                this.active = true;
                 this.fitAddon.fit();
 
                 invoke('resize_terminal', {
