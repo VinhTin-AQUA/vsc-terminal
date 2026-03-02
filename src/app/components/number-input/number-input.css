@@ -1,0 +1,118 @@
+@layer components {
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 10px;
+        position: relative;
+        width: 100%;
+    }
+
+    .input-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--foreground);
+    }
+
+    .input {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--brightBlack);
+        background: var(--background);
+        color: var(--foreground);
+        transition: all 0.2s ease;
+        outline: none;
+    }
+
+    .input::placeholder {
+        color: var(--brightBlack);
+        opacity: 0.8;
+    }
+
+    .input:hover {
+        border-color: var(--white);
+    }
+
+    .input:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px var(--highlight);
+    }
+
+    .input:disabled {
+        background: var(--black);
+        color: var(--brightBlack);
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    /* ===== States ===== */
+
+    .input-success {
+        border-color: var(--green);
+    }
+
+    .input-success:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 30%, transparent);
+    }
+
+    .input-error {
+        border-color: var(--red);
+    }
+
+    .input-error:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 30%, transparent);
+    }
+
+    .input-warning {
+        border-color: var(--yellow);
+    }
+
+    .input-warning:focus {
+        border-color: var(--yellow);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--yellow) 30%, transparent);
+    }
+
+    /* ===== Autocomplete ===== */
+
+    .autocomplete-dropdown {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        background: var(--background);
+        border: 1px solid var(--brightBlack);
+        border-radius: 12px;
+        box-shadow:
+            0 4px 6px color-mix(in srgb, var(--black) 20%, transparent),
+            0 10px 20px color-mix(in srgb, var(--black) 30%, transparent);
+        max-height: 240px;
+        overflow-y: auto;
+        padding: 6px 0;
+        animation: zoomIn 0.15s ease-out;
+        z-index: 999999 !important;
+    }
+
+    .autocomplete-dropdown.below {
+        top: calc(100% + 2px);
+    }
+
+    .autocomplete-dropdown.above {
+        bottom: calc(100% + 2px);
+    }
+
+    .autocomplete-item {
+        padding: 10px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        user-select: none;
+        color: var(--foreground);
+    }
+
+    .autocomplete-item:hover {
+        background-color: var(--highlight);
+    }
+}

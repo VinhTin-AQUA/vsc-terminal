@@ -1,0 +1,26 @@
+@for (opt of options; track $index) {
+    <ng-container>
+        <label>
+            @if (field) {
+                <ng-container>
+                    <input
+                        type="radio"
+                        [value]="opt.value"
+                        [formField]="field"
+                        (change)="emitChange(opt.value)"
+                    />
+                </ng-container>
+            } @else {
+                <ng-template>
+                    <input
+                        type="radio"
+                        [value]="opt.value"
+                        [(ngModel)]="modelValue"
+                        (ngModelChange)="onNgModelChange($event)"
+                    />
+                </ng-template>
+            }
+            {{ opt.label }}
+        </label>
+    </ng-container>
+}

@@ -1,0 +1,65 @@
+<div class="input-group">
+    <label class="input-label">
+        {{label}}
+    </label>
+
+    @if (formField) {
+        <input
+            id="ok"
+            class="input"
+            [placeholder]="placeholder"
+            (input)="onInputChange($event)"
+            [formField]="formField"
+            list="browsers"
+            autocomplete="off"
+            (focus)="onFocus($event)"
+            (blur)="onBlur()"
+            autocomplete="off"
+        />
+    } @else {
+        <input
+            id="ok"
+            class="input"
+            [value]="value"
+            [placeholder]="placeholder"
+            (input)="onInputChange($event)"
+            (blur)="onBlur()"
+            [disabled]="disabled"
+            [readonly]="readonly"
+            list="browsers"
+            autocomplete="off"
+            (focus)="onFocus($event)"
+            autocomplete="off"
+        />
+    }
+
+    <!-- Errors -->
+    @if (formField && formField()!.touched() && formField()!.invalid()) {
+        <div class="text-(--color-error)">
+            @for (error of formField()!.errors(); track error) {
+                <p>{{ error.message }}</p>
+            }
+        </div>
+    }
+
+    @if (showDropdown() && filteredOptions.length > 0) {
+        <div
+            class="autocomplete-dropdown"
+            [class.above]="dropdownPosition === 'above'"
+            [class.below]="dropdownPosition === 'below'"
+        >
+            @for (option of filteredOptions; track option) {
+                <div class="autocomplete-item" (mousedown)="selectOption(option)">
+                    {{ option.label }}
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- <datalist id="browsers">
+    <option value="Chrome"></option>
+    <option value="Firefox"></option>
+    <option value="Edge"></option>
+    <option value="Safari"></option>
+</datalist> -->

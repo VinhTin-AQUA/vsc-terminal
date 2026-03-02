@@ -4,6 +4,7 @@ import { WebLinksAddon } from 'xterm-addon-web-links';
 import { TabIcon } from './tab';
 import { invoke } from '@tauri-apps/api/core';
 import { debounceTime, Subject } from 'rxjs';
+import { PtyCommands } from '../enums/tauri-command';
 
 export class TerminalModel {
     id: string;
@@ -28,20 +29,22 @@ export class TerminalModel {
             //     leave: () => this.onLinkLeaved(),
             // },
             allowProposedApi: true,
-            fontFamily: 'Fira Code, monospace',
+            fontFamily: 'Fira Code, monospace', //
             allowTransparency: true,
-            fontSize: 12,
+            fontSize: 16, //
             drawBoldTextInBrightColors: true,
-            cursorBlink: true,
-            scrollback: 1000,
-            lineHeight: 100 / 100,
-            cursorStyle: 'bar',
-            letterSpacing: 0,
-            fontWeight: 6 * 100,
-            fontWeightBold: 6 * 100,
-            ignoreBracketedPasteMode: !true,
-            minimumContrastRatio: 1,
-            convertEol: false,
+            cursorBlink: true, //
+            scrollback: 1000, // saveLines history
+            lineHeight: 100 / 100, //
+            cursorStyle: 'bar', //
+            letterSpacing: 0, //
+            fontWeight: 6 * 100, //
+            fontWeightBold: 6 * 100, //
+            ignoreBracketedPasteMode: true,
+            minimumContrastRatio: 0,
+            convertEol: true, // true => cursor will be set to the beginning of the next line with every new line
+            smoothScrollDuration: 30, //
+            cursorWidth: 1, //
         });
 
         this.fitAddon = new FitAddon();
@@ -67,7 +70,7 @@ export class TerminalModel {
 
             this.fitAddon.fit();
 
-            invoke('resize_terminal', {
+            invoke(PtyCommands.resize_terminal, {
                 terminalId: this.id,
                 cols: this.terminal.cols,
                 rows: this.terminal.rows,
@@ -113,7 +116,7 @@ export class TerminalModel {
         this.fitAddon.fit();
         this.terminal.focus();
 
-        invoke('resize_terminal', {
+        invoke(PtyCommands.resize_terminal, {
             terminalId: this.id,
             cols: this.terminal.cols,
             rows: this.terminal.rows,
@@ -131,11 +134,11 @@ export class TerminalModel {
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
         }
-        await invoke('close_terminal', { terminalId: this.id });
+        await invoke(PtyCommands.close_terminal, { terminalId: this.id });
     }
 
     private async handleInput(data: string) {
-        await invoke('write_terminal', { terminalId: this.id, data: data });
+        await invoke(PtyCommands.write_terminal, { terminalId: this.id, data: data });
     }
 
     private resizeXterm() {

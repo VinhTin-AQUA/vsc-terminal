@@ -63,3 +63,19 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #0f172a; /* color of the scroll thumb on hover */
 }
+
+/* animation */
+@layer utilities {
+    .animate-fade-in {
+        animation: fade-in 0.1s ease-out forwards;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

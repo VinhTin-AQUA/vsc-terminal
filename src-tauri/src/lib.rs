@@ -1,4 +1,5 @@
 mod commands;
+mod models;
 mod terminal;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -20,7 +21,8 @@ pub fn run() {
             commands::terminal_commands::create_terminal,
             commands::terminal_commands::write_terminal,
             commands::terminal_commands::resize_terminal,
-            commands::terminal_commands::close_terminal
+            commands::terminal_commands::close_terminal,
+            commands::terminal_profile_commands::get_available_terminals_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,10 +1,9 @@
 use once_cell::sync::Lazy;
-use portable_pty::PtySize;
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 use tauri::AppHandle;
 
-use super::session::TerminalSession;
+use crate::models::session::TerminalSession;
 
 static SESSIONS: Lazy<Mutex<HashMap<String, TerminalSession>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));

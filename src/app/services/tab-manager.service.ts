@@ -3,6 +3,7 @@ import { Tab } from '../models/tab';
 import { TerminalModel } from '../models/terminal';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
+import { PtyCommands } from '../enums/tauri-command';
 
 @Injectable({
     providedIn: 'root',
@@ -22,7 +23,7 @@ export class TabManagerService {
         this.activatedTabId = signal<string>(defaultTab.id);
         this.activatedTerminalId = signal<string>(defaultTab.terminals[0].id);
 
-        invoke('create_terminal', { terminalId: defaultTab.terminals[0].id });
+        invoke(PtyCommands.create_terminal, { terminalId: defaultTab.terminals[0].id });
 
         listen('terminal-output', (event: any) => {
             const [terminalId, data] = event.payload;
@@ -41,7 +42,7 @@ export class TabManagerService {
             return [...x, tab];
         });
         this.setActivatedTerminalModel(tab.id, tab.terminals[0]);
-        await invoke('create_terminal', { terminalId: tab.terminals[0].id });
+        await invoke(PtyCommands.create_terminal, { terminalId: tab.terminals[0].id });
     }
 
     async splitTerminal(tabId: string, terminalId: string) {
@@ -63,7 +64,7 @@ export class TabManagerService {
             ),
         );
 
-        await invoke('create_terminal', { terminalId: newTerminal.id });
+        await invoke(PtyCommands.create_terminal, { terminalId: newTerminal.id });
 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {

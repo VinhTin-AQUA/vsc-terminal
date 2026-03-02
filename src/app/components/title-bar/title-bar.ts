@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TabManagerService } from '../../services/tab-manager.service';
 import { Tab } from '../../models/tab';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { SettingService } from '../../services/setting.service';
 
 @Component({
     selector: 'app-title-bar',
@@ -15,6 +16,8 @@ export class TitleBar {
     isDirty = false;
     openMenu: 'file' | 'edit' | 'view' | null = null;
 
+    settingService = inject(SettingService);
+
     constructor(private tabManagerService: TabManagerService) {}
 
     async minimize() {
@@ -24,18 +27,14 @@ export class TitleBar {
     async toggleMaximize() {
         const isMaximized = await this.appWindow.isMaximized();
         if (isMaximized) {
-        	await this.appWindow.unmaximize();
+            await this.appWindow.unmaximize();
         } else {
-        	await this.appWindow.maximize();
+            await this.appWindow.maximize();
         }
     }
 
     async close() {
         await this.appWindow.close();
-    }
-
-    openSettings() {
-        console.log('Open settings');
     }
 
     toggleMenu(menu: 'file' | 'edit' | 'view', event: Event) {
@@ -49,6 +48,10 @@ export class TitleBar {
 
     addTab() {
         const tab: Tab = new Tab();
-        this.tabManagerService.addTab(tab)
+        this.tabManagerService.addTab(tab);
+    }
+
+    openSettings() {
+        this.settingService.setOpenSetting(true);
     }
 }

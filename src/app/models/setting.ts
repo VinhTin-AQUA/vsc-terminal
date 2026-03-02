@@ -1,78 +1,37 @@
+export type BackgroundType = 'transparent' | 'opaque' | 'blurred' | 'mica' | 'acrylic' | 'vibrancy';
+export type CursorStyleType = 'bar' | 'underline' | 'block';
+export type FontFamilyType = 'Fira Code' | 'JetBrains Mono' | 'Cascadia Code' | 'Consolas';
+export type AppThemeType = 'Light' | 'Dark';
+
 export type Settings = {
-    appTheme: string;
-    // closeConfirmation: CloseConfirmation;
-    // desktopIntegration: DesktopIntegration;
-    // appBehavior: AppBehavior;
+    appThemes: Record<string, AppTheme>;
+    appThemeId: string;
     profiles: Profile[];
-    // macros: Macro[];
-    shortcuts: Shortcut[];
-    defaultProfile: Profile;
-    background:
-        | "transparent"
-        | "opaque"
-        | "blurred"
-        | "mica"
-        | "acrylic"
-        | "vibrancy"
-        // | { media: BackgroundMedia };
-};
-
-export type Shortcut = {
-    action: ShortcutAction;
-    shortcut: string;
-};
-
-export type ShortcutAction =
-    | "copy"
-    | "paste"
-    | "openDefaultProfile"
-    | "splitTabAndOpenDefaultProfile"
-    | "splitFocusedPaneAndOpenDefaultProfile"
-    | "splitSpecificPaneAndOpenDefaultProfile"
-    | "closeFocusedTab"
-    | "closeWindow"
-    | "closeFocusedPane"
-    | "closeSpecificPane"
-    | "focusNextTab"
-    | "focusPrevTab"
-    | "focusFirstTab"
-    | "focusLastTab"
-
-// type Macro = {
-//     content: string;
-//     id: UUID;
-// };
-
-export type TerminalSettings = {
-    bell: boolean;
-    bufferSize: number;
-    cursor: "bar" | "underline" | "block";
-    cursorBlink: boolean;
-    drawBoldInBright: boolean;
-    fontLigature: boolean;
-    fontWeight: number;
-    fontWeightBold: number;
-    fontSize: number;
-    letterSpacing: number;
-    lineHeight: number;
-    showPicture: boolean;
-    showUnreadDataMark: boolean;
-    minimumContrastRatio: number;
-    bracketedPaste: boolean;
-    hyperlinkModifier: string;
+    defaultProfileId: string;
+    terminalSettings: TerminalSettings;
 };
 
 export type Profile = {
     id: string;
     name: string;
     command: string; // "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
-    terminalSettings: TerminalSettings;
-    theme: TerminalTheme;
-    backgroundTransparency: number;
-    // background: BackgroundMedia | null;
 };
 
-export type TerminalTheme = {
+export type TerminalSettings = {
+    cursorStyle: CursorStyleType;
+    cursorBlink: boolean;
+    fontWeight: number;
+    fontWeightBold: number;
+    fontSize: number;
+    letterSpacing: number;
+    lineHeight: number;
+    fontFamily: FontFamilyType; //
+    smoothScrollDuration: number; // 0 -> 500
+    cursorWidth: number; // 1 -> 10
+    background: BackgroundType;
+};
+
+export type AppTheme = {
     foreground: string;
     background: string;
     black: string;
@@ -95,24 +54,3 @@ export type TerminalTheme = {
     cursorAccent: string;
     highlight: string;
 };
-
-// export type BackgroundMedia = {
-//     blur: number;
-//     location: string;
-// };
-
-// export type CloseConfirmation = {
-//     group: boolean;
-//     window: boolean;
-//     app: boolean;
-//     excludedProcess: string[];
-// };
-
-// export type DesktopIntegration = {
-//     dynamicTitle: boolean;
-// };
-
-// export type AppBehavior = {
-//     focusMode: "silent" | "requestAttention" | "focus";
-//     detailsCardDelay: number;
-// };

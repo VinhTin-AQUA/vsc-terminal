@@ -1,0 +1,109 @@
+@layer components {
+    /* Wrapper */
+    .radio {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        font-size: 14px;
+        color: var(--color-neutral);
+    }
+
+    .radio-label {
+        line-height: 1;
+    }
+
+    /* Ẩn radio mặc định */
+    .radio input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Box */
+    .radio-box {
+        width: 18px;
+        height: 18px;
+        border-radius: 6px;
+        border: 1.5px solid var(--color-border-strong);
+        background: var(--color-neutral-inverse);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    /* Hover */
+    .radio:hover .radio-box {
+        border-color: var(--color-primary);
+    }
+
+    /* Check icon */
+    .radio-box::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: var(--color-primary-inverse);
+        transform: scale(0);
+        transition: transform 0.15s ease;
+    }
+
+    /* Checked state */
+    .radio input:checked + .radio-box {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+    }
+
+    .radio input:checked + .radio-box::after {
+        transform: scale(1);
+    }
+
+    /* Focus */
+    .radio input:focus-visible + .radio-box {
+        box-shadow: 0 0 0 3px var(--color-primary) / 0.2;
+    }
+
+    /* Disabled */
+    .radio input:disabled + .radio-box {
+        background: var(--color-neutral-subtle);
+        border-color: var(--color-border);
+        cursor: not-allowed;
+    }
+
+    .radio input:disabled ~ .radio-label {
+        color: var(--color-neutral-muted);
+        cursor: not-allowed;
+    }
+
+    /* Variants */
+    .radio-success input:checked + .radio-box {
+        background: var(--color-success);
+        border-color: var(--color-success);
+    }
+
+    .radio-success input:focus-visible + .radio-box {
+        box-shadow: 0 0 0 3px var(--color-success) / 0.2;
+    }
+
+    .radio-error input:checked + .radio-box {
+        background: var(--color-error);
+        border-color: var(--color-error);
+    }
+
+    .radio-error input:focus-visible + .radio-box {
+        box-shadow: 0 0 0 3px var(--color-error) / 0.2;
+    }
+
+    .radio-warning input:checked + .radio-box {
+        background: var(--color-warning);
+        border-color: var(--color-warning);
+    }
+
+    .radio-warning input:focus-visible + .radio-box {
+        box-shadow: 0 0 0 3px var(--color-warning) / 0.2;
+    }
+}
