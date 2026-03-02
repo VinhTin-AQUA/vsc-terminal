@@ -187,5 +187,5 @@ jobs:
                       artifacts/linux-build/deb/${{ env.DEB_FILE_NAME }}
                       artifacts/linux-build/rpm/${{ env.RPM_FILE_NAME }}
                       artifacts/linux-build/appimage/${{ env.APPIMAGE_FILE_NAME }}
-                      artifacts/windows-build/${{ env.EXE_FILE_NAME }}
+                      artifacts/windows-build/bundle/nsis/${{ env.EXE_FILE_NAME }}
                       artifacts/windows-build/${{ env.PORTABLE_EXE_FILE_NAME }}

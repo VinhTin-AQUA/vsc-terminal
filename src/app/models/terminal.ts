@@ -53,19 +53,6 @@ export class TerminalModel {
         });
         this.terminal.onScroll(() => {});
 
-        // this.resizeSubject.pipe(debounceTime(150)).subscribe(() => {
-        //     if (this.active === false) {
-        //         this.active = true;
-        //         this.fitAddon.fit();
-
-        //         invoke('resize_terminal', {
-        //             terminalId: this.id,
-        //             cols: this.terminal.cols,
-        //             rows: this.terminal.rows,
-        //         });
-        //     }
-        // });
-
         this.resizeSubject.pipe(debounceTime(100)).subscribe(() => {
             const el = this.terminal.element;
 
@@ -87,19 +74,34 @@ export class TerminalModel {
             });
         });
 
-        // this.terminal.onResize(({ cols, rows }) => {
-        //     invoke('resize_terminal', {
-        //         terminalId: this.id,
-        //         cols: cols,
-        //         rows: rows,
-        //     });
-        // });
+        this.terminal.attachCustomKeyEventHandler((event) => {
+            // Ctrl + Shift + C
+            if (event.ctrlKey && event.shiftKey && event.key === 'C') {
+                const selection = this.terminal.getSelection();
+                if (selection) {
+                    navigator.clipboard.writeText(selection);
+                }
+                return false;
+            }
 
-        // this.terminal.attachCustomKeyEventHandler((e) => {
-        //     console.log(e.key);
+            // ---- PASTE: Ctrl + Shift + V ----
+            if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'v') {
+                navigator.clipboard.readText().then((text) => {
+                    if (text) {
+                        this.terminal.write(text);
+                    }
+                });
+                return false;
+            }
 
-        //     return true;
-        // });
+            // Ctrl + l : clear terminal
+            if (event.ctrlKey && event.key === 'l') {
+                this.terminal.clear();
+                return false;
+            }
+
+            return true;
+        });
 
         this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
     }
