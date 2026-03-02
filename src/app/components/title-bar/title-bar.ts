@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TabManagerService } from '../../services/tab-manager.service';
 import { Tab } from '../../models/tab';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 @Component({
     selector: 'app-title-bar',
@@ -9,7 +10,7 @@ import { Tab } from '../../models/tab';
     styleUrl: './title-bar.css',
 })
 export class TitleBar {
-    // private appWindow = getCurrentWindow();
+    private appWindow = getCurrentWindow();
     currentFile: string | null = null;
     isDirty = false;
     openMenu: 'file' | 'edit' | 'view' | null = null;
@@ -17,20 +18,20 @@ export class TitleBar {
     constructor(private tabManagerService: TabManagerService) {}
 
     async minimize() {
-        // await this.appWindow.minimize();
+        await this.appWindow.minimize();
     }
 
     async toggleMaximize() {
-        // const isMaximized = await this.appWindow.isMaximized();
-        // if (isMaximized) {
-        // 	await this.appWindow.unmaximize();
-        // } else {
-        // 	await this.appWindow.maximize();
-        // }
+        const isMaximized = await this.appWindow.isMaximized();
+        if (isMaximized) {
+        	await this.appWindow.unmaximize();
+        } else {
+        	await this.appWindow.maximize();
+        }
     }
 
     async close() {
-        // await this.appWindow.close();
+        await this.appWindow.close();
     }
 
     openSettings() {

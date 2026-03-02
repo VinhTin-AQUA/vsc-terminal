@@ -1,5 +1,5 @@
 .title-bar {
-    height: 36px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -80,7 +80,7 @@
 }
 
 .tb-btn.icon {
-    width: 46px;
+    /* width: 36px; */
     font-size: 14px;
 }
 

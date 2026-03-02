@@ -33,7 +33,7 @@ export class TerminalModel {
             fontSize: 12,
             drawBoldTextInBrightColors: true,
             cursorBlink: true,
-            scrollback: 3000,
+            scrollback: 1000,
             lineHeight: 100 / 100,
             cursorStyle: 'bar',
             letterSpacing: 0,
@@ -67,6 +67,17 @@ export class TerminalModel {
         // });
 
         this.resizeSubject.pipe(debounceTime(100)).subscribe(() => {
+            const el = this.terminal.element;
+
+            if (!el) return;
+
+            const rect = el.getBoundingClientRect();
+
+            // ❗ Bỏ qua nếu width/height = 0
+            if (rect.width === 0 || rect.height === 0) {
+                return;
+            }
+
             this.fitAddon.fit();
 
             invoke('resize_terminal', {
@@ -76,13 +87,13 @@ export class TerminalModel {
             });
         });
 
-        this.terminal.onResize(({ cols, rows }) => {
-            invoke('resize_terminal', {
-                terminalId: this.id,
-                cols: cols,
-                rows: rows,
-            });
-        });
+        // this.terminal.onResize(({ cols, rows }) => {
+        //     invoke('resize_terminal', {
+        //         terminalId: this.id,
+        //         cols: cols,
+        //         rows: rows,
+        //     });
+        // });
 
         // this.terminal.attachCustomKeyEventHandler((e) => {
         //     console.log(e.key);
