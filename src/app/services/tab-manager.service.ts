@@ -144,7 +144,10 @@ export class TabManagerService {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 const tab = this.tabs().find((tab) => tab.id === tabId);
-                tab?.terminals.forEach((t) => t.fitAddon.fit());
+                tab?.terminals.forEach((t) => {
+                    t.fitAddon.fit()
+                    t.terminal.focus()
+                });
             });
         });
     }

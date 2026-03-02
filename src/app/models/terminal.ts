@@ -75,8 +75,7 @@ export class TerminalModel {
         });
 
         this.terminal.attachCustomKeyEventHandler((event) => {
-            // Ctrl + Shift + C
-            if (event.ctrlKey && event.shiftKey && event.key === 'C') {
+            if (event.ctrlKey && event.shiftKey && event.code === 'KeyC') {
                 const selection = this.terminal.getSelection();
                 if (selection) {
                     navigator.clipboard.writeText(selection);
@@ -84,18 +83,14 @@ export class TerminalModel {
                 return false;
             }
 
-            // ---- PASTE: Ctrl + Shift + V ----
-            if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'v') {
-                navigator.clipboard.readText().then((text) => {
-                    if (text) {
-                        this.terminal.write(text);
-                    }
-                });
-                return false;
-            }
+            // if (event.ctrlKey && event.shiftKey && event.code === 'KeyV') {
+            //     navigator.clipboard.readText().then((text) => {
+            //         this.terminal.paste(text);
+            //     });
+            //     return false;
+            // }
 
-            // Ctrl + l : clear terminal
-            if (event.ctrlKey && event.key === 'l') {
+            if (event.ctrlKey && event.code === 'KeyL') {
                 this.terminal.clear();
                 return false;
             }
@@ -114,18 +109,9 @@ export class TerminalModel {
     }
 
     open(el: HTMLDivElement) {
-        // this.terminal.open(el);
-        // this.fitAddon.fit();
-
-        // this.resizeObserver = new ResizeObserver(() => {
-        //     this.resizeSubject.next();
-        // });
-
-        // this.resizeObserver.observe(el);
-
         this.terminal.open(el);
-
         this.fitAddon.fit();
+        this.terminal.focus();
 
         invoke('resize_terminal', {
             terminalId: this.id,
