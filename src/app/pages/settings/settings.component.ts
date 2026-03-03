@@ -20,13 +20,7 @@ import { TabManagerService } from '../../services/tab-manager.service';
 
 @Component({
     selector: 'app-settings',
-    imports: [
-        CommonModule,
-        Select,
-        NumberInput,
-        Radio,
-        FormField,
-    ],
+    imports: [CommonModule, Select, NumberInput, Radio, FormField],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.css',
 })
@@ -74,10 +68,13 @@ export class SettingsComponent {
         .profiles()
         .map((x) => ({ label: x.name, value: x.id }));
 
-    ngOnInit() {}
+    ngOnInit() {
+        console.log(this.profileOptions);
+        
+    }
 
-    closeSettings() {
+    async closeSettings() {
         this.settingService.setOpenSetting(false);
-        this.tabManagerService.reloadTerminals();
+        await this.tabManagerService.reloadTerminals();
     }
 }

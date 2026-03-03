@@ -1,5 +1,4 @@
 use std::path::Path;
-use uuid::Uuid;
 use which::which;
 
 use crate::models::terminal_profile::Profile;
@@ -11,13 +10,13 @@ pub fn get_available_terminals() -> Vec<Profile> {
     let mut add_if_exists = |name: &str, cmd: &str| {
         if let Ok(path) = which(cmd) {
             profiles.push(Profile {
-                id: name.to_string(),
+                id: cmd.to_string(),
                 name: name.to_string(),
                 command: path.to_string_lossy().to_string(),
             });
         } else if Path::new(cmd).exists() {
             profiles.push(Profile {
-                id: name.to_string(),
+                id: cmd.to_string(),
                 name: name.to_string(),
                 command: cmd.to_string(),
             });

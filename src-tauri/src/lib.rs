@@ -24,6 +24,8 @@ pub fn run() {
             commands::terminal_commands::close_terminal,
             commands::terminal_profile_commands::get_available_terminals_command,
             commands::terminal_settings_commands::get_settings_command,
+            commands::terminal_settings_commands::get_settings_command,
+            commands::terminal_settings_commands::save_settings_command,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

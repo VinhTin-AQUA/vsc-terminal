@@ -170,7 +170,10 @@ export class TabManagerService {
         );
     }
 
-    reloadTerminals() {
+    async reloadTerminals() {
+        await this.settingService.saveSettings();
+        
+        const themes = this.settingService.getAppThemes();
         this.tabs().forEach((tab) => {
             tab.terminals.forEach((terminal) => {
                 const newSettings = this.settingService.getTerminalSettings();
@@ -181,6 +184,7 @@ export class TabManagerService {
                     }
                 });
 
+                terminal.terminal.options.theme = themes
                 terminal.fitAddon.fit();
             });
         });

@@ -3,7 +3,7 @@ import { AppTheme, AppThemeType, Profile, Settings } from '../models/setting';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { invoke } from '@tauri-apps/api/core';
-import { TerminalProfileCommands } from '../enums/tauri-command';
+import { SettingsCommands, TerminalProfileCommands } from '../enums/tauri-command';
 import { disabled, form, min, max } from '@angular/forms/signals';
 
 @Injectable({
@@ -15,14 +15,13 @@ export class SettingService {
     profiles = signal<Profile[]>([]);
 
     settings = signal<Settings>({
-        id: '1',
         appThemeId: 'light',
         terminalSettings: {
             cursorStyle: 'bar',
             fontWeight: 600,
             fontSize: 14,
             letterSpacing: 0,
-            fontFamily: 'Cascadia Code',
+            fontFamily: 'JetBrains Mono',
             cursorWidth: 1,
             background: 'Acrylic',
         },
@@ -44,37 +43,24 @@ export class SettingService {
     constructor(private http: HttpClient) {}
 
     async init() {
-        // lấy themeId
-        const themeId = 'dark';
+        // get settings
+        const settings = await invoke<Settings>(SettingsCommands.get_settings_command, {});
+        this.settings.set(settings);
 
-        // lấy profileId
-
-        // lấy terminal settings
-
-        // lấy danh sách themes từ json
+        // themes
         const themes = await firstValueFrom(
             this.http.get<Record<string, AppTheme>>('themes/themes.json'),
         );
         this.appThemes.set(themes);
-        const selectedTheme: AppTheme = themes[themeId];
+        const selectedTheme: AppTheme = themes[settings.appThemeId];
         this.applyThemeToDOM(selectedTheme);
 
-        this.settings.set({
-            ...this.settings(),
-            appThemeId: themeId,
-        });
-
-        // lấy danh sách profiles mặc định trên máy
+        // terminal profiles
         const profiles = await invoke<Profile[]>(
             TerminalProfileCommands.get_available_terminals_command,
             {},
         );
-
         this.profiles.set(profiles);
-        this.settings.set({
-            ...this.settings(),
-            defaultProfileId: profiles[0].id,
-        });
     }
 
     setOpenSetting(openSetting: boolean) {
@@ -88,6 +74,12 @@ export class SettingService {
 
     getTerminalSettings() {
         return this.settings().terminalSettings;
+    }
+
+    async saveSettings() {
+        const check = await invoke<Settings>(SettingsCommands.save_settings_command, {
+            settings: this.settings(),
+        });
     }
 
     private applyThemeToDOM(theme: AppTheme) {
