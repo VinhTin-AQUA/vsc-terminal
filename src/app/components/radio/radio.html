@@ -1,26 +1,32 @@
-@for (opt of options; track $index) {
-    <ng-container>
-        <label>
-            @if (field) {
-                <ng-container>
-                    <input
-                        type="radio"
-                        [value]="opt.value"
-                        [formField]="field"
-                        (change)="emitChange(opt.value)"
-                    />
-                </ng-container>
-            } @else {
-                <ng-template>
-                    <input
-                        type="radio"
-                        [value]="opt.value"
-                        [(ngModel)]="modelValue"
-                        (ngModelChange)="onNgModelChange($event)"
-                    />
-                </ng-template>
-            }
-            {{ opt.label }}
-        </label>
-    </ng-container>
-}
+<section class="space-y-2">
+    <h3 class="section-title">Cursor Style</h3>
+    <div class="grid gap-2" [class]="'grid-cols-' + options.length">
+        @for (opt of options; track $index) {
+            <ng-container>
+                <label>
+                    @if (field) {
+                        <ng-container>
+                            <input
+                                type="radio"
+                                [value]="opt.value"
+                                [formField]="field"
+                                (change)="emitChange(opt.value)"
+                            />
+                        </ng-container>
+                    } @else {
+                        <ng-template>
+                            <input
+                                [name]="name"
+                                type="radio"
+                                [value]="opt.value"
+                                [(ngModel)]="modelValue"
+                                (ngModelChange)="onNgModelChange($event)"
+                            />
+                        </ng-template>
+                    }
+                    {{ opt.label }}
+                </label>
+            </ng-container>
+        }
+    </div>
+</section>

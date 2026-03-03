@@ -12,6 +12,7 @@ import { OptionModel } from '../../models/options.model';
 })
 export class Radio {
     @Input() options: OptionModel[] = [];
+    @Input() name: string = '';
 
     /** Signal form field */
     @Input() field: any | null = null;

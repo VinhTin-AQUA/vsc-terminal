@@ -30,53 +30,89 @@
                     [value]="defaultProfile()?.name ?? ''"
                 ></app-select>
 
+                <!-- THEME COLORS -->
+                <app-select
+                    label="Theme Colors"
+                    [formField]="settingService.settingsForm.appThemeId"
+                    [options]="appThemeOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [value]="settingService.settings().appThemeId"
+                ></app-select>
+
                 <!-- FONT FAMILY -->
                 <app-select
                     label="Font Family"
                     [formField]="settingService.settingsForm.terminalSettings.fontFamily"
-                    [options]="fontFamilies"
+                    [options]="fontFamilieOptions"
                     optionLabel="label"
                     optionValue="value"
-                    value="zsh"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontFamily"
                 ></app-select>
 
                 <!-- FONT SIZE -->
-
                 <app-number-input
                     label="Font Size"
                     [formField]="settingService.settingsForm.terminalSettings.fontSize"
                     [value]="settingService.settingsForm.terminalSettings().value().fontSize"
                 ></app-number-input>
 
-                <!-- LINE HEIGHT -->
+                <!-- FONT WEIGHT -->
+                <app-number-input
+                    label="Font Size"
+                    [formField]="settingService.settingsForm.terminalSettings.fontWeight"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontWeight"
+                ></app-number-input>
 
+                <!-- FONT WEIGHT BOLD -->
+                <app-number-input
+                    label="Font Size"
+                    [formField]="settingService.settingsForm.terminalSettings.fontWeightBold"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontWeightBold"
+                ></app-number-input>
+
+                <!-- LINE HEIGHT -->
                 <app-number-input
                     label="Line Height"
                     [formField]="settingService.settingsForm.terminalSettings.lineHeight"
                     [value]="settingService.settingsForm.terminalSettings().value().lineHeight"
                 ></app-number-input>
 
+                <!-- LETTER SPACING -->
+                <app-number-input
+                    label="Line Height"
+                    [formField]="settingService.settingsForm.terminalSettings.letterSpacing"
+                    [value]="settingService.settingsForm.terminalSettings().value().letterSpacing"
+                ></app-number-input>
+
+                <!-- SMOOTH SCROLL DURATION -->
+                <app-number-input
+                    label="Line Height"
+                    [formField]="settingService.settingsForm.terminalSettings.smoothScrollDuration"
+                    [value]="
+                        settingService.settingsForm.terminalSettings().value().smoothScrollDuration
+                    "
+                ></app-number-input>
+
                 <!-- CURSOR STYLE -->
-                <section class="space-y-2">
-                    <h3 class="section-title">Cursor Style</h3>
-                    <div class="grid grid-cols-1 gap-2">
-                        <app-radio
-                            name="cursorStyle"
-                            [field]="settingService.settingsForm.terminalSettings.cursorStyle"
-                            [options]="cursorStyles"
-                        ></app-radio>
-                    </div>
-                </section>
+                <app-radio
+                    name="cursorStyle"
+                    [field]="settingService.settingsForm.terminalSettings.cursorStyle"
+                    [options]="cursorStyleOptions"
+                ></app-radio>
 
                 <!-- CURSOR BLINK -->
-                <section class="flex items-center justify-between">
-                    <h3 class="section-title">Cursor Blink</h3>
-                    <input
-                        type="checkbox"
-                        class="toggle"
-                        [checked]="settingService.settings().terminalSettings.cursorBlink"
-                    />
-                </section>
+                <app-checkbox
+                    label="Cursor Blink"
+                    [formField]="settingService.settingsForm.terminalSettings.cursorBlink"
+                ></app-checkbox>
+
+                <!-- CURSOR WIDTH -->
+                <app-number-input
+                    label="Line Height"
+                    [formField]="settingService.settingsForm.terminalSettings.cursorWidth"
+                    [value]="settingService.settingsForm.terminalSettings().value().cursorWidth"
+                ></app-number-input>
 
                 <!-- BACKGROUND STYLE -->
                 <!-- <section class="space-y-2">
@@ -94,37 +130,7 @@
                     </div>
                 </section> -->
 
-                <!-- THEME COLORS -->
-
-                <app-select
-                    label="Theme Colors"
-                    [formField]="settingService.settingsForm.appThemeId"
-                    [options]="appThemes"
-                    optionLabel="label"
-                    optionValue="value"
-                    [value]="settingService.settings().appThemeId"
-                ></app-select>
-
-                <!-- <section class="space-y-4">
-                    <h3 class="section-title">Theme Colors</h3>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        @for (
-                            theme of settingService.settings().appThemes | keyvalue;
-                            track $index
-                        ) {
-                            <div class="flex items-center justify-between gap-3">
-                                <label class="text-sm text-zinc-600 dark:text-zinc-400 capitalize">
-                                    {{ theme.key }}
-                                </label>
-                                <input
-                                    type="color"
-                                    class="w-10 h-8 rounded border border-zinc-300 dark:border-zinc-600 bg-transparent"
-                                />
-                            </div>
-                        }
-                    </div>
-                </section> -->
+                <button (click)="logData()">Save</button>
             </div>
         </div>
     </div>

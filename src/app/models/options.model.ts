@@ -1,4 +1,4 @@
-export interface OptionModel {
+export interface OptionModel<T = any> {
     label: string;
-    value: any;
+    value: T;
 }

@@ -1,7 +1,37 @@
-export type BackgroundType = 'transparent' | 'opaque' | 'blurred' | 'mica' | 'acrylic' | 'vibrancy';
-export type CursorStyleType = 'bar' | 'underline' | 'block';
-export type FontFamilyType = 'Fira Code' | 'JetBrains Mono' | 'Cascadia Code' | 'Consolas';
-export type AppThemeType = 'Light' | 'Dark';
+// export type BackgroundType = 'transparent' | 'opaque' | 'blurred' | 'mica' | 'acrylic' | 'vibrancy';
+
+export const BACKGROUNDS = {
+    transparent: 'Transparent',
+    opaque: 'Opaque',
+    blurred: 'Blurred',
+    mica: 'Mica',
+    acrylic: 'Acrylic',
+    vibrancy: 'Vibrancy',
+} as const;
+export type BackgroundType = (typeof BACKGROUNDS)[keyof typeof BACKGROUNDS];
+
+export const CURSOR_STYLES = {
+    bar: 'bar',
+    underline: 'underline',
+    block: 'block',
+} as const;
+export type CursorStyleType = (typeof CURSOR_STYLES)[keyof typeof CURSOR_STYLES];
+
+export const FONT_FAMILIES = {
+    FiraCode: 'Fira Code',
+    JetBrainsMono: 'JetBrains Mono',
+    CascadiaCode: 'Cascadia Code',
+    Consolas: 'Consolas',
+} as const;
+export type FontFamilyType = (typeof FONT_FAMILIES)[keyof typeof FONT_FAMILIES];
+
+export const APP_THEMES = {
+    Light: 'light',
+    Dark: 'dark',
+} as const;
+export type AppThemeType = (typeof APP_THEMES)[keyof typeof APP_THEMES];
+
+// ===============================
 
 export type Settings = {
     appThemes: Record<string, AppTheme>;

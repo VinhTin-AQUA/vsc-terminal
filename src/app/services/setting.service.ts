@@ -15,7 +15,7 @@ export class SettingService {
         appThemes: {},
         appThemeId: 'light',
         terminalSettings: {
-            cursorStyle: 'block',
+            cursorStyle: 'bar',
             cursorBlink: true,
             fontWeight: 600,
             fontWeightBold: 600,
@@ -25,7 +25,7 @@ export class SettingService {
             fontFamily: 'Cascadia Code',
             smoothScrollDuration: 30,
             cursorWidth: 1,
-            background: 'acrylic',
+            background: 'Acrylic',
         },
         profiles: [
             {

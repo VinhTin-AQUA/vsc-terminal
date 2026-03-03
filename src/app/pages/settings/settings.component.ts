@@ -7,87 +7,54 @@ import { NumberInput } from '../../components/number-input/number-input';
 import { Radio } from '../../components/radio/radio';
 import { FormField } from '@angular/forms/signals';
 import { OptionModel } from '../../models/options.model';
+import { Checkbox } from '../../components/checkbox/checkbox';
+import {
+    APP_THEMES,
+    AppThemeType,
+    BACKGROUNDS,
+    BackgroundType,
+    CURSOR_STYLES,
+    CursorStyleType,
+    FONT_FAMILIES,
+    FontFamilyType,
+} from '../../models/setting';
 
 @Component({
     selector: 'app-settings',
-    imports: [CommonModule, Select, TextInput, NumberInput, Radio, FormField],
+    imports: [CommonModule, Select, TextInput, NumberInput, Radio, FormField, Checkbox],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
     settingService = inject(SettingService);
 
-    cursorStyles: OptionModel[] = [
-        {
-            label: 'bar',
-            value: 'bar',
-        },
-        {
-            label: 'underline',
-            value: 'underline',
-        },
-        {
-            label: 'block',
-            value: 'block',
-        },
-    ];
+    cursorStyleOptions: OptionModel<CursorStyleType>[] = Object.entries(CURSOR_STYLES).map(
+        ([label, value]) => ({
+            label,
+            value: value as CursorStyleType,
+        }),
+    );
 
-    fontFamilies: OptionModel[] = [
-        {
-            label: 'Fira Code',
-            value: 'Fira Code',
+    fontFamilieOptions: OptionModel<FontFamilyType>[] = Object.entries(FONT_FAMILIES).map(
+        ([label, value]) => {
+            return {
+                label: value as FontFamilyType,
+                value: value as FontFamilyType,
+            };
         },
-        {
-            label: 'JetBrains Mono',
-            value: 'JetBrains Mono',
-        },
-        {
-            label: 'Cascadia Code',
-            value: 'Cascadia Code',
-        },
-        {
-            label: 'Consolas',
-            value: 'Consolas',
-        },
-    ];
+    );
 
-    appThemes: OptionModel[] = [
-        {
-            label: 'Light',
-            value: 'light',
-        },
-        {
-            label: 'Dark',
-            value: 'dark',
-        },
-    ];
+    appThemeOptions: OptionModel<AppThemeType>[] = Object.entries(APP_THEMES).map(([label, value]) => ({
+        label,
+        value: value as AppThemeType,
+    }));
 
-    backgrounds: OptionModel[] = [
-        {
-            label: 'transparent',
-            value: 'transparent',
-        },
-        {
-            label: 'opaque',
-            value: 'opaque',
-        },
-        {
-            label: 'blurred',
-            value: 'blurred',
-        },
-        {
-            label: 'mica',
-            value: 'mica',
-        },
-        {
-            label: 'acrylic',
-            value: 'acrylic',
-        },
-        {
-            label: 'vibrancy',
-            value: 'vibrancy',
-        },
-    ];
+    backgroundOptions: OptionModel<BackgroundType>[] = Object.entries(BACKGROUNDS).map(
+        ([value, label]) => ({
+            label,
+            value: value as BackgroundType,
+        }),
+    );
 
     defaultProfile = computed(() =>
         this.settingService
@@ -99,5 +66,10 @@ export class SettingsComponent {
 
     closeSettings() {
         this.settingService.setOpenSetting(false);
+    }
+
+    logData() {
+        console.log(this.settingService.settings());
+        
     }
 }

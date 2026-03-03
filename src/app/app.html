@@ -1,9 +1,7 @@
 <router-outlet></router-outlet>
 
 @if (settingService.openSetting()) {
-    <div
-        class="fixed inset-0 h-screen flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm"
-    >
+    <div class="fixed inset-0 h-screen flex items-center justify-center z-50 backdrop-blur-[2px]">
         <app-settings> </app-settings>
     </div>
 }
