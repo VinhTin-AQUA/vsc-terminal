@@ -5,6 +5,7 @@ import { TabIcon } from './tab';
 import { invoke } from '@tauri-apps/api/core';
 import { debounceTime, Subject } from 'rxjs';
 import { PtyCommands } from '../enums/tauri-command';
+import { AppTheme, TerminalSettings } from './setting';
 
 export class TerminalModel {
     id: string;
@@ -16,35 +17,26 @@ export class TerminalModel {
     private resizeObserver: ResizeObserver;
     private resizeSubject = new Subject<void>();
 
-    constructor() {
+    constructor(theme: AppTheme, terminalSettings: TerminalSettings) {
         this.id = crypto.randomUUID().toString();
         this.title = 'Powershell';
         this.icon = 'powershell';
         this.active = false;
 
         this.terminal = new Terminal({
-            // linkHandler: {
-            //     activate: (e, uri) => this.onLinkClicked(e, uri),
-            //     hover: (_, uri, range) => this.onLinkHovered(uri, range),
-            //     leave: () => this.onLinkLeaved(),
-            // },
+            theme: { ...theme },
             allowProposedApi: true,
-            fontFamily: 'Fira Code, monospace', //
             allowTransparency: true,
-            fontSize: 16, //
             drawBoldTextInBrightColors: true,
             cursorBlink: true, //
             scrollback: 1000, // saveLines history
             lineHeight: 100 / 100, //
-            cursorStyle: 'bar', //
-            letterSpacing: 0, //
-            fontWeight: 6 * 100, //
             fontWeightBold: 6 * 100, //
             ignoreBracketedPasteMode: true,
             minimumContrastRatio: 0,
             convertEol: true, // true => cursor will be set to the beginning of the next line with every new line
             smoothScrollDuration: 30, //
-            cursorWidth: 1, //
+            ...terminalSettings,
         });
 
         this.fitAddon = new FitAddon();
@@ -104,8 +96,8 @@ export class TerminalModel {
         this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
     }
 
-    clone() {
-        const newTerminal: TerminalModel = new TerminalModel();
+    clone(theme: AppTheme, terminalSettings: TerminalSettings) {
+        const newTerminal: TerminalModel = new TerminalModel(theme, terminalSettings);
         newTerminal.id = crypto.randomUUID().toString();
 
         return newTerminal;

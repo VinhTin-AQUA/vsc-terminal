@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { AppTheme, Profile, Settings } from '../models/setting';
+import { AppTheme, AppThemeType, Profile, Settings } from '../models/setting';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { invoke } from '@tauri-apps/api/core';
@@ -10,7 +10,7 @@ import { disabled, form, min, max } from '@angular/forms/signals';
     providedIn: 'root',
 })
 export class SettingService {
-    openSetting = signal<boolean>(true);
+    openSetting = signal<boolean>(false);
     appThemes = signal<Record<string, AppTheme>>({});
     profiles = signal<Profile[]>([]);
 
@@ -40,12 +40,10 @@ export class SettingService {
         max(x.terminalSettings.letterSpacing, 10);
     });
 
-    constructor(private http: HttpClient) {
-        this.init();
-    }
+    constructor(private http: HttpClient) {}
 
     async init() {
-        await this.loadTheme('light');
+        await this.loadTheme('dark');
 
         const profiles = await invoke<Profile[]>(
             TerminalProfileCommands.get_available_terminals_command,
@@ -65,7 +63,7 @@ export class SettingService {
         this.openSetting.set(openSetting);
     }
 
-    async loadTheme(themeName: 'light' | 'dark') {
+    async loadTheme(themeName: AppThemeType) {
         const themes = await firstValueFrom(
             this.http.get<Record<string, AppTheme>>('themes/themes.json'),
         );
@@ -79,6 +77,15 @@ export class SettingService {
 
         this.settings.set(updatedSettings);
         this.applyThemeToDOM(selectedTheme);
+    }
+
+    getAppThemes() {
+        const theme = this.appThemes()[this.settings().appThemeId];
+        return theme;
+    }
+
+    getTerminalSettings() {
+        return this.settings().terminalSettings;
     }
 
     private applyThemeToDOM(theme: AppTheme) {

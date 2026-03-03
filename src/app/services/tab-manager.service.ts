@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Tab } from '../models/tab';
 import { TerminalModel } from '../models/terminal';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { PtyCommands } from '../enums/tauri-command';
+import { SettingService } from './setting.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,10 +13,17 @@ export class TabManagerService {
     tabs = signal<Tab[]>([]);
     activatedTabId = signal<string>('');
     activatedTerminalId = signal<string>('');
+    settingService = inject(SettingService);
 
-    constructor() {
-        const defaultTab = new Tab();
+    constructor() {}
+
+    async init() {
+        const defaultTab = new Tab(
+            this.settingService.getAppThemes(),
+            this.settingService.settings().terminalSettings,
+        );
         defaultTab.terminals[0].active = true;
+
         this.tabs.update((x) => {
             return [defaultTab];
         });
@@ -33,7 +41,7 @@ export class TabManagerService {
 
             if (!terminal) return;
 
-            terminal.terminal.write(data)
+            terminal.terminal.write(data);
         });
     }
 
@@ -51,7 +59,10 @@ export class TabManagerService {
 
         const terminal = tab.terminals.find((x) => x.id === terminalId);
         if (!terminal) return;
-        const newTerminal = terminal.clone();
+        const newTerminal = terminal.clone(
+            this.settingService.getAppThemes(),
+            this.settingService.settings().terminalSettings,
+        );
 
         this.tabs.update((tabs) =>
             tabs.map((tab) =>
@@ -133,9 +144,9 @@ export class TabManagerService {
                 tab.id === tabId
                     ? {
                           ...tab,
-                          terminals: tab.terminals.map(x => {
-                            x.active = false
-                            return x
+                          terminals: tab.terminals.map((x) => {
+                              x.active = false;
+                              return x;
                           }),
                       }
                     : tab,
@@ -146,8 +157,8 @@ export class TabManagerService {
             requestAnimationFrame(() => {
                 const tab = this.tabs().find((tab) => tab.id === tabId);
                 tab?.terminals.forEach((t) => {
-                    t.fitAddon.fit()
-                    t.terminal.focus()
+                    t.fitAddon.fit();
+                    t.terminal.focus();
                 });
             });
         });
@@ -157,5 +168,21 @@ export class TabManagerService {
         this.tabs.update((list) =>
             list.map((t) => (t.id === id ? { ...t, initialized: true, terminal } : t)),
         );
+    }
+
+    reloadTerminals() {
+        this.tabs().forEach((tab) => {
+            tab.terminals.forEach((terminal) => {
+                const newSettings = this.settingService.getTerminalSettings();
+
+                Object.entries(newSettings).forEach(([key, value]) => {
+                    if ((terminal.terminal.options as any)[key] !== value) {
+                        (terminal.terminal.options as any)[key] = value;
+                    }
+                });
+
+                terminal.fitAddon.fit();
+            });
+        });
     }
 }
