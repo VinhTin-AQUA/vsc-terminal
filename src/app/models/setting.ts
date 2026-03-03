@@ -34,9 +34,7 @@ export type AppThemeType = (typeof APP_THEMES)[keyof typeof APP_THEMES];
 // ===============================
 
 export type Settings = {
-    appThemes: Record<string, AppTheme>;
     appThemeId: string;
-    profiles: Profile[];
     defaultProfileId: string;
     terminalSettings: TerminalSettings;
 };

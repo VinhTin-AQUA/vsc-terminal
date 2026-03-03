@@ -11,8 +11,10 @@ import { disabled, form, min, max } from '@angular/forms/signals';
 })
 export class SettingService {
     openSetting = signal<boolean>(true);
+    appThemes = signal<Record<string, AppTheme>>({});
+    profiles = signal<Profile[]>([]);
+
     settings = signal<Settings>({
-        appThemes: {},
         appThemeId: 'light',
         terminalSettings: {
             cursorStyle: 'bar',
@@ -23,13 +25,6 @@ export class SettingService {
             cursorWidth: 1,
             background: 'Acrylic',
         },
-        profiles: [
-            {
-                id: '',
-                name: '',
-                command: '',
-            },
-        ],
         defaultProfileId: '',
     });
 
@@ -56,9 +51,10 @@ export class SettingService {
             TerminalProfileCommands.get_available_terminals_command,
             {},
         );
+
+        this.profiles.set(profiles);
         const updatedSettings: Settings = {
             ...this.settings(),
-            profiles: profiles,
             defaultProfileId: profiles[0].id,
         };
 
@@ -74,11 +70,11 @@ export class SettingService {
             this.http.get<Record<string, AppTheme>>('themes/themes.json'),
         );
 
+        this.appThemes.set(themes);
         const selectedTheme: AppTheme = themes[themeName];
         const updatedSettings: Settings = {
             ...this.settings(),
             appThemeId: themeName,
-            appThemes: themes,
         };
 
         this.settings.set(updatedSettings);

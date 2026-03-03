@@ -24,9 +24,9 @@
                     <app-select
                         label="Default Profile"
                         [formField]="settingService.settingsForm.defaultProfileId"
-                        [options]="settingService.settingsForm.profiles().value()"
-                        optionLabel="name"
-                        optionValue="id"
+                        [options]="profileOptions"
+                        optionLabel="label"
+                        optionValue="value"
                         [value]="defaultProfile()?.name ?? ''"
                     ></app-select>
 

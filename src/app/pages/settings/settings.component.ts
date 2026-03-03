@@ -18,12 +18,22 @@ import {
     FONT_FAMILIES,
     FontFamilyType,
 } from '../../models/setting';
-import { Button } from "../../components/button/button";
-import { RangeInput } from "../../components/range-input/range-input";
+import { Button } from '../../components/button/button';
+import { RangeInput } from '../../components/range-input/range-input';
 
 @Component({
     selector: 'app-settings',
-    imports: [CommonModule, Select, TextInput, NumberInput, Radio, FormField, Checkbox, Button, RangeInput],
+    imports: [
+        CommonModule,
+        Select,
+        TextInput,
+        NumberInput,
+        Radio,
+        FormField,
+        Checkbox,
+        Button,
+        RangeInput,
+    ],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.css',
 })
@@ -46,10 +56,12 @@ export class SettingsComponent {
         },
     );
 
-    appThemeOptions: OptionModel<AppThemeType>[] = Object.entries(APP_THEMES).map(([label, value]) => ({
-        label,
-        value: value as AppThemeType,
-    }));
+    appThemeOptions: OptionModel<AppThemeType>[] = Object.entries(APP_THEMES).map(
+        ([label, value]) => ({
+            label,
+            value: value as AppThemeType,
+        }),
+    );
 
     backgroundOptions: OptionModel<BackgroundType>[] = Object.entries(BACKGROUNDS).map(
         ([value, label]) => ({
@@ -60,11 +72,16 @@ export class SettingsComponent {
 
     defaultProfile = computed(() =>
         this.settingService
-            .settings()
-            .profiles.find((p) => p.id === this.settingService.settings().defaultProfileId),
+            .profiles()
+            .find((p) => p.id === this.settingService.settings().defaultProfileId),
     );
 
-    ngOnInit() {}
+    profileOptions: OptionModel[] = this.settingService
+        .profiles()
+        .map((x) => ({ label: x.name, value: x.id }));
+
+    ngOnInit() {
+    }
 
     closeSettings() {
         this.settingService.setOpenSetting(false);
@@ -72,6 +89,5 @@ export class SettingsComponent {
 
     logData() {
         console.log(this.settingService.settings());
-        
     }
 }
