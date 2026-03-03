@@ -76,6 +76,11 @@ export class SettingService {
         return this.settings().terminalSettings;
     }
 
+    getTerminalProfileCommand() {
+        const profile = this.profiles().find(x => x.id === this.settings().defaultProfileId);
+        return profile?.command ?? "";
+    }
+
     async saveSettings() {
         const check = await invoke<Settings>(SettingsCommands.save_settings_command, {
             settings: this.settings(),

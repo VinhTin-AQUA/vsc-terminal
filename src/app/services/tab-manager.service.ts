@@ -31,7 +31,10 @@ export class TabManagerService {
         this.activatedTabId = signal<string>(defaultTab.id);
         this.activatedTerminalId = signal<string>(defaultTab.terminals[0].id);
 
-        invoke(PtyCommands.create_terminal, { terminalId: defaultTab.terminals[0].id });
+        invoke(PtyCommands.create_terminal, {
+            terminalId: defaultTab.terminals[0].id,
+            command: this.settingService.getTerminalProfileCommand(),
+        });
 
         listen('terminal-output', (event: any) => {
             const [terminalId, data] = event.payload;
@@ -172,7 +175,7 @@ export class TabManagerService {
 
     async reloadTerminals() {
         await this.settingService.saveSettings();
-        
+
         const themes = this.settingService.getAppThemes();
         this.tabs().forEach((tab) => {
             tab.terminals.forEach((terminal) => {
@@ -184,7 +187,7 @@ export class TabManagerService {
                     }
                 });
 
-                terminal.terminal.options.theme = themes
+                terminal.terminal.options.theme = themes;
                 terminal.fitAddon.fit();
             });
         });

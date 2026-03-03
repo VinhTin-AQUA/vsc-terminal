@@ -14,9 +14,9 @@ pub fn init(app: AppHandle) {
     APP_HANDLE.set(app).expect("APP_HANDLE already set");
 }
 
-pub fn create(terminal_id: String) {
+pub fn create(terminal_id: String, command: String) {
     let app = APP_HANDLE.get().expect("AppHandle not initialized").clone();
-    let session = TerminalSession::new(app, terminal_id.clone());
+    let session = TerminalSession::new(app, terminal_id.clone(), command);
     SESSIONS.lock().unwrap().insert(terminal_id, session);
 }
 

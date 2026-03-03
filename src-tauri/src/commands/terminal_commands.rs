@@ -1,8 +1,8 @@
 use crate::terminal::manager;
 
 #[tauri::command]
-pub fn create_terminal(terminal_id: String) {
-    manager::create(terminal_id);
+pub fn create_terminal(terminal_id: String, command: String) {
+    manager::create(terminal_id, command);
 }
 
 #[tauri::command]

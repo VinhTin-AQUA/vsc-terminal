@@ -9,7 +9,7 @@ pub struct TerminalSession {
 }
 
 impl TerminalSession {
-    pub fn new(app: AppHandle, tab_id: String) -> Self {
+    pub fn new(app: AppHandle, tab_id: String, command: String) -> Self {
         let pty_system = native_pty_system();
 
         let pair = pty_system
@@ -28,7 +28,7 @@ impl TerminalSession {
         // let shell = "/usr/bin/zsh";
         // let shell = "/bin/bash";
 
-        let (shell, args) = Self::get_shell_and_args();
+        let (shell, args) = Self::get_shell_and_args(command);
         let mut cmd = CommandBuilder::new(shell);
 
         for arg in args {
@@ -119,29 +119,35 @@ impl TerminalSession {
         }
     }
 
-    pub fn get_shell_and_args() -> (String, Vec<String>) {
+    pub fn get_shell_and_args(command: String) -> (String, Vec<String>) {
+
+        /* linux command: "/bin/zsh" | "/usr/bin/zsh" | "/usr/bin/gnome-terminal"
+
+        */
+
         #[cfg(target_os = "windows")]
         {
-            if let Ok(comspec) = std::env::var("COMSPEC") {
-                return (comspec, vec![]);
-            }
+            // if let Ok(comspec) = std::env::var("COMSPEC") {
+            //     return (comspec, vec![]);
+            // }
             return ("cmd.exe".to_string(), vec![]);
         }
 
         #[cfg(target_os = "macos")]
         {
-            if let Ok(shell) = std::env::var("SHELL") {
-                return (shell, vec!["-l".into(), "-i".into()]);
-            }
+            // if let Ok(shell) = std::env::var("SHELL") {
+            //     return (shell, vec!["-l".into(), "-i".into()]);
+            // }
             return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
         }
 
         #[cfg(all(unix, not(target_os = "macos")))]
         {
-            if let Ok(shell) = std::env::var("SHELL") {
-                return (shell, vec!["-l".into(), "-i".into()]);
-            }
-            return ("/bin/bash".to_string(), vec!["-l".into(), "-i".into()]);
+            // get deffault shell
+            // if let Ok(shell) = std::env::var("SHELL") {
+            //     return (shell, vec!["-l".into(), "-i".into()]);
+            // }
+            return (command.to_string(), vec!["-l".into(), "-i".into()]);
         }
     }
 }
