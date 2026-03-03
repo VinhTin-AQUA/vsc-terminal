@@ -25,6 +25,7 @@ export const FONT_FAMILIES = {
 } as const;
 export type FontFamilyType = (typeof FONT_FAMILIES)[keyof typeof FONT_FAMILIES];
 
+
 export const APP_THEMES = {
     Light: 'light',
     Dark: 'dark',
@@ -34,6 +35,7 @@ export type AppThemeType = (typeof APP_THEMES)[keyof typeof APP_THEMES];
 // ===============================
 
 export type Settings = {
+    id: string;
     appThemeId: string;
     defaultProfileId: string;
     terminalSettings: TerminalSettings;

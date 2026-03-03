@@ -15,6 +15,7 @@ export class SettingService {
     profiles = signal<Profile[]>([]);
 
     settings = signal<Settings>({
+        id: '1',
         appThemeId: 'light',
         terminalSettings: {
             cursorStyle: 'bar',
@@ -43,40 +44,41 @@ export class SettingService {
     constructor(private http: HttpClient) {}
 
     async init() {
-        await this.loadTheme('dark');
+        // lấy themeId
+        const themeId = 'dark';
 
+        // lấy profileId
+
+        // lấy terminal settings
+
+        // lấy danh sách themes từ json
+        const themes = await firstValueFrom(
+            this.http.get<Record<string, AppTheme>>('themes/themes.json'),
+        );
+        this.appThemes.set(themes);
+        const selectedTheme: AppTheme = themes[themeId];
+        this.applyThemeToDOM(selectedTheme);
+
+        this.settings.set({
+            ...this.settings(),
+            appThemeId: themeId,
+        });
+
+        // lấy danh sách profiles mặc định trên máy
         const profiles = await invoke<Profile[]>(
             TerminalProfileCommands.get_available_terminals_command,
             {},
         );
 
         this.profiles.set(profiles);
-        const updatedSettings: Settings = {
+        this.settings.set({
             ...this.settings(),
             defaultProfileId: profiles[0].id,
-        };
-
-        this.settings.set(updatedSettings);
+        });
     }
 
     setOpenSetting(openSetting: boolean) {
         this.openSetting.set(openSetting);
-    }
-
-    async loadTheme(themeName: AppThemeType) {
-        const themes = await firstValueFrom(
-            this.http.get<Record<string, AppTheme>>('themes/themes.json'),
-        );
-
-        this.appThemes.set(themes);
-        const selectedTheme: AppTheme = themes[themeName];
-        const updatedSettings: Settings = {
-            ...this.settings(),
-            appThemeId: themeName,
-        };
-
-        this.settings.set(updatedSettings);
-        this.applyThemeToDOM(selectedTheme);
     }
 
     getAppThemes() {
