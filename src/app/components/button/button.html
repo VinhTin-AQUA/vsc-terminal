@@ -1,0 +1,12 @@
+<button
+	type="button"
+	class="ui-btn"
+	[class]="class"
+	
+	[disabled]="disabled"
+	(click)="handleClick($event)"
+>
+	<ng-content></ng-content>
+</button>
+
+<!-- [ngClass]="['ui-btn--' + status]" -->

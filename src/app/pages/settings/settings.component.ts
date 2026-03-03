@@ -18,10 +18,12 @@ import {
     FONT_FAMILIES,
     FontFamilyType,
 } from '../../models/setting';
+import { Button } from "../../components/button/button";
+import { RangeInput } from "../../components/range-input/range-input";
 
 @Component({
     selector: 'app-settings',
-    imports: [CommonModule, Select, TextInput, NumberInput, Radio, FormField, Checkbox],
+    imports: [CommonModule, Select, TextInput, NumberInput, Radio, FormField, Checkbox, Button, RangeInput],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.css',
 })

@@ -4,19 +4,19 @@ import { FieldTree, FormField } from '@angular/forms/signals';
 import { OptionModel } from '../../models/options.model';
 
 @Component({
-    selector: 'app-number-input',
+    selector: 'app-range-input',
     imports: [FormField],
-    templateUrl: './number-input.html',
-    styleUrl: './number-input.css',
+    templateUrl: './range-input.html',
+    styleUrl: './range-input.css',
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => NumberInput),
+            useExisting: forwardRef(() => RangeInput),
             multi: true,
         },
     ],
 })
-export class NumberInput implements ControlValueAccessor {
+export class RangeInput implements ControlValueAccessor {
     // ====== Inputs ======
     @Input() formField?: FieldTree<number>;
     @Input() label = '';
@@ -25,14 +25,11 @@ export class NumberInput implements ControlValueAccessor {
     @Input() disabled = false;
     @Input() readonly = false;
     @Input() id = crypto.randomUUID().toString();
-    @Input() options: OptionModel[] = [];
+    @Input() min = 1;
+    @Input() max = 100;
     @Input() step = 1;
 
     @Output() valueChange = new EventEmitter<string>();
-
-    // ====== Autocomplete State ======
-    showDropdown = signal<boolean>(false);
-    dropdownPosition: 'above' | 'below' = 'below';
 
     // ====== ControlValueAccessor ======
     private onChange: (value: string) => void = () => {};
@@ -65,23 +62,15 @@ export class NumberInput implements ControlValueAccessor {
 
         this.onChange(newValue);
         this.valueChange.emit(newValue);
-
-        this.showDropdown.set(true);
     }
 
     onFocus(event: FocusEvent) {
         const input = event.target as HTMLElement;
         this.updateDropdownPosition(input);
-        this.showDropdown.set(true);
     }
 
     onBlur() {
         this.onTouched();
-
-        // delay để click option không bị mất
-        setTimeout(() => {
-            this.showDropdown.set(false);
-        }, 150);
     }
 
     // ====== Autocomplete Logic ======
@@ -90,13 +79,6 @@ export class NumberInput implements ControlValueAccessor {
         const rect = input.getBoundingClientRect();
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
-
-        // 240 = max-height dropdown
-        if (spaceBelow < 240 && spaceAbove > spaceBelow) {
-            this.dropdownPosition = 'above';
-        } else {
-            this.dropdownPosition = 'below';
-        }
     }
 
     selectOption(option: OptionModel) {
@@ -109,7 +91,5 @@ export class NumberInput implements ControlValueAccessor {
 
         this.onChange(newValue);
         this.valueChange.emit(newValue);
-
-        this.showDropdown.set(true);
     }
 }

@@ -49,14 +49,10 @@ export type Profile = {
 
 export type TerminalSettings = {
     cursorStyle: CursorStyleType;
-    cursorBlink: boolean;
     fontWeight: number;
-    fontWeightBold: number;
     fontSize: number;
     letterSpacing: number;
-    lineHeight: number;
     fontFamily: FontFamilyType; //
-    smoothScrollDuration: number; // 0 -> 500
     cursorWidth: number; // 1 -> 10
     background: BackgroundType;
 };

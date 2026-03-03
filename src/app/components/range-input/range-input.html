@@ -1,6 +1,6 @@
 <div class="input-group">
     <label class="input-label">
-        {{label}}
+        {{ label }}
     </label>
 
     @if (formField) {
@@ -10,17 +10,15 @@
             [placeholder]="placeholder"
             (input)="onInputChange($event)"
             [formField]="formField"
-            type="number"
+            type="range"
             list="browsers"
-            autocomplete="off"
             (focus)="onFocus($event)"
             (blur)="onBlur()"
-            [step]="step"
         />
     } @else {
         <input
             id="ok"
-            class="input"
+            class="range"
             [value]="value"
             [placeholder]="placeholder"
             (input)="onInputChange($event)"
@@ -28,8 +26,10 @@
             [disabled]="disabled"
             [readonly]="readonly"
             list="browsers"
-            autocomplete="off"
             (focus)="onFocus($event)"
+            [min]="min"
+            [max]="max"
+            [step]="min"
         />
     }
 
@@ -41,7 +41,6 @@
             }
         </div>
     }
-
 </div>
 
 <!-- <datalist id="browsers">

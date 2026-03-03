@@ -4,26 +4,22 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { invoke } from '@tauri-apps/api/core';
 import { TerminalProfileCommands } from '../enums/tauri-command';
-import { form } from '@angular/forms/signals';
+import { disabled, form, min, max } from '@angular/forms/signals';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SettingService {
-    openSetting = signal<boolean>(false);
+    openSetting = signal<boolean>(true);
     settings = signal<Settings>({
         appThemes: {},
         appThemeId: 'light',
         terminalSettings: {
             cursorStyle: 'bar',
-            cursorBlink: true,
             fontWeight: 600,
-            fontWeightBold: 600,
             fontSize: 14,
             letterSpacing: 0,
-            lineHeight: 1,
             fontFamily: 'Cascadia Code',
-            smoothScrollDuration: 30,
             cursorWidth: 1,
             background: 'Acrylic',
         },
@@ -37,7 +33,17 @@ export class SettingService {
         defaultProfileId: '',
     });
 
-    settingsForm = form(this.settings);
+    settingsForm = form(this.settings, (x) => {
+        // disabled(x.terminalSettings.fontSize)
+        min(x.terminalSettings.fontSize, 12);
+        max(x.terminalSettings.fontSize, 30);
+
+        min(x.terminalSettings.fontWeight, 100);
+        max(x.terminalSettings.fontWeight, 700);
+
+        min(x.terminalSettings.letterSpacing, 1);
+        max(x.terminalSettings.letterSpacing, 10);
+    });
 
     constructor(private http: HttpClient) {
         this.init();
@@ -73,7 +79,6 @@ export class SettingService {
             ...this.settings(),
             appThemeId: themeName,
             appThemes: themes,
-            
         };
 
         this.settings.set(updatedSettings);
