@@ -2,7 +2,7 @@ use std::path::Path;
 use which::which;
 
 use crate::{
-    constansts::shell_consts::{LINUX_SHELL_LIST, SHELL_CONSTS, WINDOWS_SHELL_LIST},
+    constansts::shell_consts::{LINUX_SHELL_LIST, WINDOWS_SHELL_LIST},
     models::terminal_profile::Profile,
 };
 

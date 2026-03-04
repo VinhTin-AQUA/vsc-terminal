@@ -19,6 +19,7 @@ export class TabManagerService {
 
     async init() {
         const profile = this.settingService.getProfile();
+
         const defaultTab = new Tab(
             this.settingService.getAppThemes(),
             this.settingService.settings().terminalSettings,

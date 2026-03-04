@@ -4,10 +4,9 @@ use tokio::{fs, io::AsyncWriteExt};
 use which::which;
 
 use crate::{
-    constansts::shell_consts::{LINUX_SHELL_LIST, WINDOWS_SHELL_LIST},
-    models::settings::{
+    constansts::shell_consts::{LINUX_SHELL_LIST, WINDOWS_SHELL_LIST}, helpers::shell_helper, models::settings::{
         BackgroundType, CursorStyleType, FontFamilyType, Settings, TerminalSettings,
-    },
+    }
 };
 
 const APP_NAME: &str = "vscode-terminal";
@@ -56,41 +55,6 @@ pub async fn save_settings(settings: &Settings) -> Result<bool, String> {
     Ok(true)
 }
 
-fn detect_default_profile_id() -> String {
-    // =========================
-    // Windows
-    // =========================
-    if cfg!(target_os = "windows") {
-        for shell in &WINDOWS_SHELL_LIST {
-            if which(shell.command).is_ok() || Path::new(shell.command).exists() {
-                return shell.id.to_string();
-            }
-        }
-    }
-
-    // =========================
-    // macOS
-    // =========================
-    // if cfg!(target_os = "macos") {
-    // }
-
-    // =========================
-    // Linux
-    // =========================
-    if cfg!(target_os = "linux") {
-        if cfg!(target_os = "windows") {
-            for shell in &LINUX_SHELL_LIST {
-                if which(shell.command).is_ok() || Path::new(shell.command).exists() {
-                    return shell.id.to_string();
-                }
-            }
-        }
-    }
-
-    // fallback cuối cùng
-    "sh".to_string()
-}
-
 fn get_settings_path() -> Result<PathBuf, String> {
     let mut base_dir = dirs::config_dir().ok_or("Cannot determine config directory")?;
 
@@ -102,7 +66,7 @@ fn get_settings_path() -> Result<PathBuf, String> {
 fn default_settings() -> Settings {
     Settings {
         app_theme_id: "dark".to_string(),
-        default_profile_id: detect_default_profile_id(),
+        default_profile_id: shell_helper::get_default_shell_id(),
         terminal_settings: TerminalSettings {
             cursor_style: CursorStyleType::Bar,
             font_weight: 400,

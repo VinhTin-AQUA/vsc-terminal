@@ -28,12 +28,12 @@ pub const SHELL_CONSTS: ShellConsts = ShellConsts {
     zsh: ShellConfig {
         id: "zsh",
         name: "Zsh",
-        command: "zsh",
+        command: "/bin/zsh",
     },
     bash: ShellConfig {
         id: "bash",
         name: "Bash",
-        command: "bash",
+        command: "/bin/bash",
     },
 };
 

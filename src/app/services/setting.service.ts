@@ -53,7 +53,6 @@ export class SettingService {
         );
 
         this.appThemes.set(themes);
-
         this.applyThemeToDOM(settings.appThemeId);
 
         // terminal profiles

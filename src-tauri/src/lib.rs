@@ -2,6 +2,7 @@ mod commands;
 mod models;
 mod terminal;
 mod constansts;
+mod helpers;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

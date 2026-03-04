@@ -3,6 +3,8 @@ use std::io::{Read, Write};
 use std::{env, thread};
 use tauri::{AppHandle, Emitter};
 
+use crate::helpers::shell_helper;
+
 pub struct TerminalSession {
     pub writer: Box<dyn Write + Send>,
     pub master: Box<dyn MasterPty + Send>,
@@ -95,38 +97,11 @@ impl TerminalSession {
         });
     }
 
-    pub fn get_default_shell() -> String {
-        #[cfg(target_os = "windows")]
-        {
-            if let Ok(shell) = std::env::var("COMSPEC") {
-                return shell;
-            }
-            return "cmd.exe".to_string();
-        }
-
-        // #[cfg(target_os = "macos")]
-        // {
-        //     if let Ok(shell) = std::env::var("SHELL") {
-        //         return shell;
-        //     }
-        //     return "/bin/zsh".to_string();
-        // }
-
-        #[cfg(all(unix, not(target_os = "macos")))]
-        {
-            if let Ok(shell) = std::env::var("SHELL") {
-                return shell;
-            }
-            return "/bin/bash".to_string();
-        }
-    }
-
     pub fn get_shell_and_args(command: String) -> (String, Vec<String>) {
-
         println!("command = {:?}", command);
 
         if command == "" {
-            return (Self::get_default_shell(), vec![]);
+            return (shell_helper::get_default_shell_id(), vec![]);
         }
 
         #[cfg(target_os = "windows")]
@@ -136,7 +111,7 @@ impl TerminalSession {
 
         // #[cfg(target_os = "macos")]
         // {
-            // return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
+        // return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
         // }
 
         #[cfg(all(unix, not(target_os = "macos")))]
