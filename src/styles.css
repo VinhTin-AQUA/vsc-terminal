@@ -60,63 +60,96 @@
 
 @layer components {
     .tree-item {
-        --line-color: white;
-        --line-size: 2px;
+        --line-color: var(--brightBlack);
+        --line-size: 1.5px;
 
         position: relative;
-        padding-left: 16px; /* khoảng cách cho line */
+        padding-left: 18px;
+        transition: color 0.2s ease;
     }
 
-    /* đường dọc */
+    /* ===== Vertical line ===== */
     .tree-item::after {
         content: '';
         position: absolute;
-        left: 5px;
+        left: 6px;
         top: 0;
         bottom: 0;
         width: var(--line-size);
         background-color: var(--line-color);
+        opacity: 0.6;
     }
 
-    /* đường ngang */
+    /* ===== Horizontal connector ===== */
     .tree-item::before {
         content: '';
         position: absolute;
-        left: 5px;
+        left: 6px;
         top: 50%;
         transform: translateY(-50%);
-        width: 8px;
+        width: 10px;
         height: var(--line-size);
         background-color: var(--line-color);
+        opacity: 0.6;
     }
 
-    /* item đầu: chỉ vẽ từ giữa xuống */
+    /* First item: draw from middle downward */
     .tree-item:first-child::after {
         top: 50%;
     }
 
-    /* item cuối: chỉ vẽ từ trên xuống giữa */
+    /* Last item: draw from top to middle */
     .tree-item:last-child::after {
         bottom: 50%;
+    }
+
+    /* ===== Hover effect ===== */
+    .tree-item:hover {
+        --line-color: var(--blue);
+    }
+
+    /* ===== Active item ===== */
+    .tree-item.active {
+        --line-color: var(--blue);
+    }
+
+    /* ===== Subtle smoothing ===== */
+    .tree-item::before,
+    .tree-item::after {
+        transition:
+            background-color 0.2s ease,
+            opacity 0.2s ease;
     }
 }
 
 /* scroll bar */
+/* ===== SCROLLBAR ===== */
+
 ::-webkit-scrollbar {
-    width: 5px; /* width of the entire scrollbar */
-    height: 5px;
+    width: 6px;
+    height: 6px;
 }
 
+/* Track */
 ::-webkit-scrollbar-track {
-    background: #fff; /* color of the tracking area */
+    background: var(--background);
 }
 
+/* Thumb */
 ::-webkit-scrollbar-thumb {
-    background: #111827; /* color of the scroll thumb */
+    background-color: var(--brightBlack);
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
 }
 
+/* Hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #0f172a; /* color of the scroll thumb on hover */
+    background-color: var(--blue);
+}
+
+/* Active (khi đang kéo) */
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--brightBlue);
 }
 
 /* animation */

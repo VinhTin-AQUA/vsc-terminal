@@ -1,73 +1,89 @@
 @layer components {
-	.ui-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
+    .ui-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
 
-		padding: 8px 16px;
-		border-radius: 6px;
-		border: 1px solid transparent;
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: 1px solid var(--brightBlack);
 
-		font-weight: 500;
-		font-size: 14px;
+        font-weight: 500;
+        font-size: 14px;
 
-		cursor: pointer;
-		transition: all 0.2s ease;
+        cursor: pointer;
+        transition: all 0.2s ease;
 
-		background-color: var(--color-primary);
-		color: var(--color-primary-inverse);
+        background-color: var(--blue);
+        color: var(--background);
 
-		&:disabled {
-			opacity: 0.6;
-			cursor: not-allowed;
-		}
-	}
+        &:hover:not(:disabled) {
+            background-color: var(--brightBlue);
+        }
 
-	/* ================= VARIANTS ================= */
+        &:active:not(:disabled) {
+            background-color: var(--cyan);
+            transform: translateY(1px);
+        }
 
-	.ui-btn--primary {
-		background-color: var(--color-primary);
-		color: var(--color-primary-inverse);
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: var(--brightBlack);
+            color: var(--white);
+        }
 
-		&:hover {
-			background-color: var(--color-primary-strong);
-		}
-	}
+        &:focus-visible {
+            outline: 2px solid var(--highlight);
+            outline-offset: 2px;
+        }
+    }
 
-	.ui-btn--success {
-		background-color: var(--color-success);
-		color: var(--color-success-inverse);
+    /* ================= VARIANTS ================= */
 
-		&:hover {
-			background-color: var(--color-success-strong);
-		}
-	}
+    .ui-btn--primary {
+        background-color: var(--color-primary);
+        color: var(--color-primary-inverse);
 
-	.ui-btn--danger {
-		background-color: var(--color-error);
-		color: var(--color-error-inverse);
+        &:hover {
+            background-color: var(--color-primary-strong);
+        }
+    }
 
-		&:hover {
-			background-color: var(--color-error-strong);
-		}
-	}
+    .ui-btn--success {
+        background-color: var(--color-success);
+        color: var(--color-success-inverse);
 
-	.ui-btn--warning {
-		background-color: var(--color-warning);
-		color: var(--color-warning-inverse);
+        &:hover {
+            background-color: var(--color-success-strong);
+        }
+    }
 
-		&:hover {
-			background-color: var(--color-warning-strong);
-		}
-	}
+    .ui-btn--danger {
+        background-color: var(--color-error);
+        color: var(--color-error-inverse);
 
-	.ui-btn--neutral {
-		background-color: var(--color-neutral);
-		color: var(--color-neutral-inverse);
+        &:hover {
+            background-color: var(--color-error-strong);
+        }
+    }
 
-		&:hover {
-			background-color: var(--color-neutral-strong);
-		}
-	}
+    .ui-btn--warning {
+        background-color: var(--color-warning);
+        color: var(--color-warning-inverse);
+
+        &:hover {
+            background-color: var(--color-warning-strong);
+        }
+    }
+
+    .ui-btn--neutral {
+        background-color: var(--color-neutral);
+        color: var(--color-neutral-inverse);
+
+        &:hover {
+            background-color: var(--color-neutral-strong);
+        }
+    }
 }

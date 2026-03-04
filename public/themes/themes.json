@@ -1,7 +1,6 @@
 {
     "light": {
-        "id": "1",
-        "foreground": "#2e3440",
+        "foreground": "#000000",
         "background": "#ffffff",
         "black": "#000000",
         "red": "#d32f2f",

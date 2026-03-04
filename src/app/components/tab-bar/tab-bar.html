@@ -1,32 +1,30 @@
-<aside class="w-52 bg-gray-800 text-white overflow-auto h-full">
-    <ul class="">
+<aside class="sidebar">
+    <ul class="sidebar-list">
         @for (tab of tabManagerService.tabs(); track $index) {
-            <li class="">
-                <!-- SINGLE TERMINAL -->
+            <li>
                 @if (tab.terminals.length === 1) {
                     <div
-                        class="flex items-center justify-between text-[0.8rem] ps-2 py-1 pe-1 rounded-md cursor-pointer hover:bg-gray-700"
-                        [ngClass]="{
-                            'bg-gray-600':
-                                tabManagerService.activatedTerminalId() === tab.terminals[0].id,
-                        }"
+                        class="sidebar-item"
+                        [class.active]="
+                            tabManagerService.activatedTerminalId() === tab.terminals[0].id
+                        "
                         (click)="setActivatedTerminalModel(tab, tab.terminals[0])"
                     >
-                        <span class="truncate">
+                        <span class="sidebar-title">
                             {{ tab.terminals[0].title }}
                         </span>
 
-                        <div class="flex items-center transition">
+                        <div class="sidebar-actions">
                             <button
                                 (click)="removeTerminal($event, tab, tab.terminals[0])"
-                                class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                class="sidebar-btn"
                             >
                                 ✕
                             </button>
 
                             <button
                                 (click)="splitTerminal($event, tab, tab.terminals[0])"
-                                class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                class="sidebar-btn"
                             >
                                 ⊕
                             </button>
@@ -34,33 +32,31 @@
                     </div>
                 }
 
-                <!-- MULTIPLE TERMINALS -->
                 @if (tab.terminals.length > 1) {
-                    <ul class="">
+                    <ul class="sidebar-sublist">
                         @for (terminal of tab.terminals; track $index) {
                             <li
-                                class="tree-item flex items-center justify-between text-[0.8rem] ps-5 pe-1 py-1 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
-                                [ngClass]="{
-                                    'bg-gray-600':
-                                        tabManagerService.activatedTerminalId() === terminal.id,
-                                }"
+                                class="tree-item sidebar-item nested"
+                                [class.active]="
+                                    tabManagerService.activatedTerminalId() === terminal.id
+                                "
                                 (click)="setActivatedTerminalModel(tab, terminal)"
                             >
-                                <span class="truncate">
+                                <span class="sidebar-title">
                                     {{ terminal.title }}
                                 </span>
 
-                                <div class="flex items-center transition">
+                                <div class="sidebar-actions">
                                     <button
                                         (click)="removeTerminal($event, tab, terminal)"
-                                        class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                        class="sidebar-btn"
                                     >
                                         ✕
                                     </button>
 
                                     <button
                                         (click)="splitTerminal($event, tab, terminal)"
-                                        class="w-5 h-5 flex items-center justify-center rounded hover:bg-gray-800 transition"
+                                        class="sidebar-btn"
                                     >
                                         ⊕
                                     </button>

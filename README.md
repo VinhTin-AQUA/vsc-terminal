@@ -75,3 +75,7 @@ For more information on using the Angular CLI, including detailed command refere
     ```
 
 - Sử dụng cần ghi rõ monospace: font-family: "'Major Mono Display', monospace"
+
+## Thêm terminal profile
+
+- vào src-tauri\src\constansts\shell_consts.rs để thêm

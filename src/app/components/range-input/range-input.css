@@ -1,0 +1,113 @@
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.input-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+/* ===== RANGE INPUT ===== */
+
+.range,
+.input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--brightBlack);
+    outline: none;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+.range:hover:not(:disabled),
+.input[type='range']:hover:not(:disabled) {
+    background: var(--blue);
+}
+
+/* Focus */
+.range:focus-visible,
+.input[type='range']:focus-visible {
+    outline: 2px solid var(--highlight);
+    outline-offset: 3px;
+}
+
+/* ===== THUMB ===== */
+
+/* Chrome / Edge / Safari */
+.range::-webkit-slider-thumb,
+.input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+
+    background: var(--blue);
+    border: 2px solid var(--background);
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease;
+}
+
+.range:hover::-webkit-slider-thumb,
+.input[type='range']:hover::-webkit-slider-thumb {
+    transform: scale(1.1);
+    background: var(--brightBlue);
+}
+
+/* Firefox */
+.range::-moz-range-thumb,
+.input[type='range']::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid var(--background);
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease;
+}
+
+.range:hover::-moz-range-thumb,
+.input[type='range']:hover::-moz-range-thumb {
+    transform: scale(1.1);
+    background: var(--brightBlue);
+}
+
+/* ===== DISABLED ===== */
+
+.range:disabled,
+.input[type='range']:disabled {
+    background: var(--brightBlack);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.range:disabled::-webkit-slider-thumb,
+.input[type='range']:disabled::-webkit-slider-thumb {
+    background: var(--white);
+    cursor: not-allowed;
+}
+
+.range:disabled::-moz-range-thumb,
+.input[type='range']:disabled::-moz-range-thumb {
+    background: var(--white);
+    cursor: not-allowed;
+}
+
+/* ===== ERROR ===== */
+
+.text-\(--color-error\) {
+    font-size: 13px;
+    color: var(--red);
+}

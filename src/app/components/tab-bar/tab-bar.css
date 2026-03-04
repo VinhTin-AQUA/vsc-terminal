@@ -1,0 +1,106 @@
+.sidebar {
+	width: 220px;
+	height: 100%;
+	overflow: auto;
+
+	background-color: var(--background);
+	color: var(--foreground);
+
+	border-right: 1px solid var(--brightBlack);
+}
+
+/* ===== LIST ===== */
+
+.sidebar-list,
+.sidebar-sublist {
+	list-style: none;
+	margin: 0;
+	padding: 6px;
+}
+
+/* ===== ITEM ===== */
+
+.sidebar-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	padding: 6px 8px;
+	border-radius: 6px;
+
+	font-size: 13px;
+	cursor: pointer;
+
+	transition: 
+		background-color 0.2s ease,
+		color 0.2s ease;
+}
+
+/* Nested items */
+.sidebar-item.nested {
+	padding-left: 20px;
+}
+
+/* Hover */
+.sidebar-item:hover {
+	background-color: var(--highlight);
+}
+
+/* Active */
+.sidebar-item.active {
+	background-color: var(--blue);
+	color: var(--background);
+    
+}
+
+/* ===== TITLE ===== */
+
+.sidebar-title {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	flex: 1;
+}
+
+/* ===== ACTION BUTTONS ===== */
+
+.sidebar-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	opacity: 0;
+	transition: opacity 0.15s ease;
+}
+
+/* Show actions on hover */
+.sidebar-item:hover .sidebar-actions {
+	opacity: 1;
+}
+
+/* Button */
+.sidebar-btn {
+	width: 20px;
+	height: 20px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 4px;
+	border: none;
+
+	background: transparent;
+	color: inherit;
+
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.sidebar-btn:hover {
+	background-color: var(--brightBlack);
+}
+
+/* Active item buttons */
+.sidebar-item.active .sidebar-btn:hover {
+	background-color: var(--brightBlue);
+}

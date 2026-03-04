@@ -5,10 +5,12 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
+
         cursor: pointer;
         user-select: none;
+
         font-size: 14px;
-        color: var(--color-neutral);
+        color: var(--foreground);
     }
 
     .radio-label {
@@ -21,41 +23,47 @@
         opacity: 0;
         width: 0;
         height: 0;
+        pointer-events: none;
     }
 
-    /* Box */
+    /* Outer circle */
     .radio-box {
         width: 18px;
         height: 18px;
-        border-radius: 6px;
-        border: 1.5px solid var(--color-border-strong);
-        background: var(--color-neutral-inverse);
+        border-radius: 50%;
+
+        border: 2px solid var(--brightBlack);
+        background: var(--background);
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         transition: all 0.2s ease;
     }
 
     /* Hover */
-    .radio:hover .radio-box {
-        border-color: var(--color-primary);
+    .radio:hover input:not(:disabled) + .radio-box {
+        border-color: var(--blue);
     }
 
-    /* Check icon */
+    /* Inner dot */
     .radio-box::after {
         content: '';
-        width: 10px;
-        height: 10px;
-        border-radius: 3px;
-        background: var(--color-primary-inverse);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+
+        background: var(--background);
+
         transform: scale(0);
         transition: transform 0.15s ease;
     }
 
-    /* Checked state */
+    /* Checked */
     .radio input:checked + .radio-box {
-        background: var(--color-primary);
-        border-color: var(--color-primary);
+        background: var(--blue);
+        border-color: var(--blue);
     }
 
     .radio input:checked + .radio-box::after {
@@ -64,18 +72,20 @@
 
     /* Focus */
     .radio input:focus-visible + .radio-box {
-        box-shadow: 0 0 0 3px var(--color-primary) / 0.2;
+        outline: 2px solid var(--highlight);
+        outline-offset: 2px;
     }
 
     /* Disabled */
     .radio input:disabled + .radio-box {
-        background: var(--color-neutral-subtle);
-        border-color: var(--color-border);
+        background: var(--brightBlack);
+        border-color: var(--brightBlack);
+        opacity: 0.6;
         cursor: not-allowed;
     }
 
     .radio input:disabled ~ .radio-label {
-        color: var(--color-neutral-muted);
+        opacity: 0.6;
         cursor: not-allowed;
     }
 
