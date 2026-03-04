@@ -1,26 +1,25 @@
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
-import { TabIcon } from './tab';
 import { invoke } from '@tauri-apps/api/core';
 import { debounceTime, Subject } from 'rxjs';
 import { PtyCommands } from '../enums/tauri-command';
-import { AppTheme, TerminalSettings } from './setting';
+import { AppTheme, Profile, TerminalSettings } from './setting';
 
 export class TerminalModel {
     id: string;
     terminal: Terminal;
     fitAddon: FitAddon;
     title: string;
-    icon: TabIcon;
+    icon: string;
     active: boolean;
     private resizeObserver: ResizeObserver;
     private resizeSubject = new Subject<void>();
 
-    constructor(theme: AppTheme, terminalSettings: TerminalSettings) {
+    constructor(theme: AppTheme, terminalSettings: TerminalSettings, profile: Profile) {
         this.id = crypto.randomUUID().toString();
-        this.title = 'Powershell';
-        this.icon = 'powershell';
+        this.title = profile.name;
+        this.icon = profile.id;
         this.active = false;
 
         this.terminal = new Terminal({
@@ -97,8 +96,8 @@ export class TerminalModel {
         this.resizeObserver = new ResizeObserver(() => this.resizeXterm());
     }
 
-    clone(theme: AppTheme, terminalSettings: TerminalSettings) {
-        const newTerminal: TerminalModel = new TerminalModel(theme, terminalSettings);
+    clone(theme: AppTheme, terminalSettings: TerminalSettings, profile: Profile) {
+        const newTerminal: TerminalModel = new TerminalModel(theme, terminalSettings, profile);
         newTerminal.id = crypto.randomUUID().toString();
         return newTerminal;
     }

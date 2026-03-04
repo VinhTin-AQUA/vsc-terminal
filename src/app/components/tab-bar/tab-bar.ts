@@ -3,10 +3,11 @@ import { TabManagerService } from '../../services/tab-manager.service';
 import { Tab } from '../../models/tab';
 import { TerminalModel } from '../../models/terminal';
 import { CommonModule } from '@angular/common';
+import { Icon } from "../icon/icon";
 
 @Component({
     selector: 'app-tab-bar',
-    imports: [CommonModule],
+    imports: [CommonModule, Icon],
     templateUrl: './tab-bar.html',
     styleUrl: './tab-bar.css',
 })

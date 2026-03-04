@@ -1,0 +1,15 @@
+<svg
+    [attr.viewBox]="'0 0 16 16'"
+    preserveAspectRatio="xMidYMid meet"
+    [class]="class"
+    [ngStyle]="{
+        width: size + 'px',
+        height: size + 'px',
+        color: color,
+        fill: fill,
+        stroke: stroke
+    }"
+    aria-hidden="true"
+>
+    <use [attr.href]="spritePath + '#' + name"></use>
+</svg>

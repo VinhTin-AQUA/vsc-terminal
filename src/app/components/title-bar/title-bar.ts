@@ -47,9 +47,11 @@ export class TitleBar {
     }
 
     addTab() {
+        const profile = this.settingService.getProfile();
         const tab: Tab = new Tab(
             this.settingService.getAppThemes(),
             this.settingService.settings().terminalSettings,
+            profile,
         );
         this.tabManagerService.addTab(tab);
     }

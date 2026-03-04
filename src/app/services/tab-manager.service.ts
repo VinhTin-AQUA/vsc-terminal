@@ -18,9 +18,11 @@ export class TabManagerService {
     constructor() {}
 
     async init() {
+        const profile = this.settingService.getProfile();
         const defaultTab = new Tab(
             this.settingService.getAppThemes(),
             this.settingService.settings().terminalSettings,
+            profile,
         );
         defaultTab.terminals[0].active = true;
 
@@ -33,7 +35,7 @@ export class TabManagerService {
 
         await invoke(PtyCommands.create_terminal, {
             terminalId: defaultTab.terminals[0].id,
-            command: this.settingService.getTerminalProfileCommand(),
+            command: profile.command,
         });
 
         listen('terminal-output', (event: any) => {
@@ -52,14 +54,16 @@ export class TabManagerService {
         this.tabs.update((x) => {
             return [...x, tab];
         });
+        const profile = this.settingService.getProfile();
         this.setActivatedTerminalModel(tab.id, tab.terminals[0]);
         await invoke(PtyCommands.create_terminal, {
             terminalId: tab.terminals[0].id,
-            command: this.settingService.getTerminalProfileCommand(),
+            command: profile.command,
         });
     }
 
     async splitTerminal(tabId: string, terminalId: string) {
+        const profile = this.settingService.getProfile();
         const tab = this.tabs().find((x) => x.id === tabId);
         if (!tab) return;
 
@@ -68,6 +72,7 @@ export class TabManagerService {
         const newTerminal = terminal.clone(
             this.settingService.getAppThemes(),
             this.settingService.settings().terminalSettings,
+            profile,
         );
 
         this.tabs.update((tabs) =>
@@ -83,7 +88,7 @@ export class TabManagerService {
 
         await invoke(PtyCommands.create_terminal, {
             terminalId: newTerminal.id,
-            command: this.settingService.getTerminalProfileCommand(),
+            command: profile.command,
         });
 
         requestAnimationFrame(() => {
