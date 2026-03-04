@@ -102,13 +102,13 @@ impl TerminalSession {
             return "cmd.exe".to_string();
         }
 
-        #[cfg(target_os = "macos")]
-        {
-            if let Ok(shell) = std::env::var("SHELL") {
-                return shell;
-            }
-            return "/bin/zsh".to_string();
-        }
+        // #[cfg(target_os = "macos")]
+        // {
+        //     if let Ok(shell) = std::env::var("SHELL") {
+        //         return shell;
+        //     }
+        //     return "/bin/zsh".to_string();
+        // }
 
         #[cfg(all(unix, not(target_os = "macos")))]
         {
@@ -121,32 +121,24 @@ impl TerminalSession {
 
     pub fn get_shell_and_args(command: String) -> (String, Vec<String>) {
 
-        /* linux command: "/bin/zsh" | "/usr/bin/zsh" | "/usr/bin/gnome-terminal"
+        println!("command = {:?}", command);
 
-        */
+        if command == "" {
+            return (Self::get_default_shell(), vec![]);
+        }
 
         #[cfg(target_os = "windows")]
         {
-            // if let Ok(comspec) = std::env::var("COMSPEC") {
-            //     return (comspec, vec![]);
-            // }
-            return ("cmd.exe".to_string(), vec![]);
+            return (command.to_string(), vec![]);
         }
 
-        #[cfg(target_os = "macos")]
-        {
-            // if let Ok(shell) = std::env::var("SHELL") {
-            //     return (shell, vec!["-l".into(), "-i".into()]);
-            // }
-            return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
-        }
+        // #[cfg(target_os = "macos")]
+        // {
+            // return ("/bin/zsh".to_string(), vec!["-l".into(), "-i".into()]);
+        // }
 
         #[cfg(all(unix, not(target_os = "macos")))]
         {
-            // get deffault shell
-            // if let Ok(shell) = std::env::var("SHELL") {
-            //     return (shell, vec!["-l".into(), "-i".into()]);
-            // }
             return (command.to_string(), vec!["-l".into(), "-i".into()]);
         }
     }

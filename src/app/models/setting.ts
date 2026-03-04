@@ -18,13 +18,21 @@ export const CURSOR_STYLES = {
 export type CursorStyleType = (typeof CURSOR_STYLES)[keyof typeof CURSOR_STYLES];
 
 export const FONT_FAMILIES = {
+    Courier: 'Courier',
+    Consolas: 'Consolas',
+    Monaco: 'Monaco',
+    Menlo: 'Menlo',
+    DejaVuSansMono: 'DejaVu Sans Mono',
+    UbuntuMono: 'Ubuntu Mono',
+    LiberationMono: 'Liberation Mono',
+    SourceCodePro: 'Source Code Pro',
     FiraCode: 'Fira Code',
     JetBrainsMono: 'JetBrains Mono',
+    Inconsolata: 'Inconsolata',
     CascadiaCode: 'Cascadia Code',
-    Consolas: 'Consolas',
+    Terminus: 'Terminus',
 } as const;
 export type FontFamilyType = (typeof FONT_FAMILIES)[keyof typeof FONT_FAMILIES];
-
 
 export const APP_THEMES = {
     Light: 'light',

@@ -3,8 +3,11 @@ use std::path::{Path, PathBuf};
 use tokio::{fs, io::AsyncWriteExt};
 use which::which;
 
-use crate::models::settings::{
-    BackgroundType, CursorStyleType, FontFamilyType, Settings, TerminalSettings,
+use crate::{
+    constansts::shell_consts::{LINUX_SHELL_LIST, WINDOWS_SHELL_LIST},
+    models::settings::{
+        BackgroundType, CursorStyleType, FontFamilyType, Settings, TerminalSettings,
+    },
 };
 
 const APP_NAME: &str = "vscode-terminal";
@@ -28,7 +31,7 @@ pub async fn get_settings() -> Result<Settings, String> {
 pub async fn save_settings(settings: &Settings) -> Result<bool, String> {
     let path = get_settings_path()?;
 
-    // Tạo thư mục nếu chưa tồn tại
+    // create folder if not exists
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)
             .await
@@ -54,44 +57,33 @@ pub async fn save_settings(settings: &Settings) -> Result<bool, String> {
 }
 
 fn detect_default_profile_id() -> String {
-    let mut candidates: Vec<(&str, &str)> = Vec::new();
-
     // =========================
     // Windows
     // =========================
     if cfg!(target_os = "windows") {
-        candidates = vec![
-            (
-                "powershell",
-                r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
-            ),
-            ("cmd", r"C:\Windows\System32\cmd.exe"),
-            ("wt", "wt.exe"),
-        ];
+        for shell in &WINDOWS_SHELL_LIST {
+            if which(shell.command).is_ok() || Path::new(shell.command).exists() {
+                return shell.id.to_string();
+            }
+        }
     }
 
     // =========================
     // macOS
     // =========================
-    if cfg!(target_os = "macos") {
-        candidates = vec![("zsh", "zsh"), ("bash", "bash")];
-    }
+    // if cfg!(target_os = "macos") {
+    // }
 
     // =========================
     // Linux
     // =========================
     if cfg!(target_os = "linux") {
-        candidates = vec![
-            ("bash", "bash"),
-            ("zsh", "zsh"),
-            ("gnome-terminal", "gnome-terminal"),
-            ("konsole", "konsole"),
-        ];
-    }
-
-    for (id, cmd) in candidates {
-        if which(cmd).is_ok() || Path::new(cmd).exists() {
-            return id.to_string();
+        if cfg!(target_os = "windows") {
+            for shell in &LINUX_SHELL_LIST {
+                if which(shell.command).is_ok() || Path::new(shell.command).exists() {
+                    return shell.id.to_string();
+                }
+            }
         }
     }
 

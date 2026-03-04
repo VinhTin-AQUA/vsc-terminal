@@ -31,7 +31,7 @@ export class TabManagerService {
         this.activatedTabId = signal<string>(defaultTab.id);
         this.activatedTerminalId = signal<string>(defaultTab.terminals[0].id);
 
-        invoke(PtyCommands.create_terminal, {
+        await invoke(PtyCommands.create_terminal, {
             terminalId: defaultTab.terminals[0].id,
             command: this.settingService.getTerminalProfileCommand(),
         });
@@ -53,7 +53,10 @@ export class TabManagerService {
             return [...x, tab];
         });
         this.setActivatedTerminalModel(tab.id, tab.terminals[0]);
-        await invoke(PtyCommands.create_terminal, { terminalId: tab.terminals[0].id });
+        await invoke(PtyCommands.create_terminal, {
+            terminalId: tab.terminals[0].id,
+            command: this.settingService.getTerminalProfileCommand(),
+        });
     }
 
     async splitTerminal(tabId: string, terminalId: string) {
@@ -78,7 +81,10 @@ export class TabManagerService {
             ),
         );
 
-        await invoke(PtyCommands.create_terminal, { terminalId: newTerminal.id });
+        await invoke(PtyCommands.create_terminal, {
+            terminalId: newTerminal.id,
+            command: this.settingService.getTerminalProfileCommand(),
+        });
 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {

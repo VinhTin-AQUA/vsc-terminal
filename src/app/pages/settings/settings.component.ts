@@ -69,8 +69,6 @@ export class SettingsComponent {
         .map((x) => ({ label: x.name, value: x.id }));
 
     ngOnInit() {
-        console.log(this.profileOptions);
-        
     }
 
     async closeSettings() {

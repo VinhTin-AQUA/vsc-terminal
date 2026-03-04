@@ -57,3 +57,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+bổ sung font 
+trong src-tauri\src\models\settings.rs thêm font vào FontFamilyType
+trong src\app\models\setting.ts thêm font vào FONT_FAMILIES
