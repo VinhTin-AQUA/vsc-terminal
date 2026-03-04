@@ -58,6 +58,20 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-bổ sung font 
-trong src-tauri\src\models\settings.rs thêm font vào FontFamilyType
-trong src\app\models\setting.ts thêm font vào FONT_FAMILIES
+## bổ sung font
+
+- trong src-tauri/src/models/settings.rs thêm font vào FontFamilyType, tên đầy đủ của font khi sử dụng là: "'Major Mono Display', monospace"
+- trong src/app/models/setting.ts thêm font vào FONT_FAMILIES, tên font đầy đủ khi sử dụng là: "'Major Mono Display', monospace"
+- vào googlefont tải file font chữ về, chỉ chọn monospace, lưu vào public/fonts
+- vào src/styles.css khai báo, khai báo thì không cần ghi monospace
+
+    ```css
+    @font-face {
+        font-family: 'Major Mono Display';
+        src: url('/fonts/MajorMonoDisplay-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+    ```
+
+- Sử dụng cần ghi rõ monospace: font-family: "'Major Mono Display', monospace"

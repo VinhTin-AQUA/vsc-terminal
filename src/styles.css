@@ -3,7 +3,60 @@
 @import 'tailwindcss';
 @import 'xterm/css/xterm.css';
 
-/* @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap'); */
+/* Courier Prime */
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('/fonts/CourierPrime-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Fira Code */
+@font-face {
+    font-family: 'Fira Code';
+    src: url('/fonts/FiraCode-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Inconsolata Condensed */
+@font-face {
+    font-family: 'Inconsolata Condensed';
+    src: url('/fonts/Inconsolata_Condensed-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* JetBrains Mono */
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Major Mono Display';
+    src: url('/fonts/MajorMonoDisplay-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Source Code Pro */
+@font-face {
+    font-family: 'Source Code Pro';
+    src: url('/fonts/SourceCodePro-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Ubuntu Mono */
+@font-face {
+    font-family: 'Ubuntu Mono';
+    src: url('/fonts/UbuntuMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
 
 @layer components {
     .tree-item {

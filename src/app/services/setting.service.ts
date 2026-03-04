@@ -21,7 +21,7 @@ export class SettingService {
             fontWeight: 600,
             fontSize: 14,
             letterSpacing: 0,
-            fontFamily: 'JetBrains Mono',
+            fontFamily: "'JetBrains Mono', monospace",
             cursorWidth: 1,
             background: 'Acrylic',
         },
@@ -51,6 +51,7 @@ export class SettingService {
         const themes = await firstValueFrom(
             this.http.get<Record<string, AppTheme>>('themes/themes.json'),
         );
+        
         this.appThemes.set(themes);
         const selectedTheme: AppTheme = themes[settings.appThemeId];
         this.applyThemeToDOM(selectedTheme);

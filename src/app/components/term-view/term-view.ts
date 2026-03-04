@@ -22,10 +22,10 @@ export class TermView {
 
     // private viewInitialized = false;
 
-    ngAfterViewInit(): void {
+    async ngAfterViewInit() {
         // this.viewInitialized = true;
         // this.tryInitTerminal();
-        this.terminal.open(this.terminalContainer.nativeElement);
+        await this.terminal.open(this.terminalContainer.nativeElement);
     }
 
     // ngOnChanges(): void {

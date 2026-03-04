@@ -20,44 +20,29 @@ pub struct TerminalSettings {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum FontFamilyType {
-    #[serde(rename = "Courier")]
+    #[serde(rename = "'Courier Prime', monospace")]
     Courier,
 
     #[serde(rename = "Consolas")]
     Consolas,
 
-    #[serde(rename = "Monaco")]
-    Monaco,
-
-    #[serde(rename = "Menlo")]
-    Menlo,
-
-    #[serde(rename = "DejaVu Sans Mono")]
-    DejaVuSansMono,
-
-    #[serde(rename = "Ubuntu Mono")]
+    #[serde(rename = "'Ubuntu Mono', monospace")]
     UbuntuMono,
 
-    #[serde(rename = "Liberation Mono")]
-    LiberationMono,
-
-    #[serde(rename = "Source Code Pro")]
+    #[serde(rename = "'Source Code Pro', monospace")]
     SourceCodePro,
 
-    #[serde(rename = "Fira Code")]
+    #[serde(rename = "'Fira Code', monospace")]
     FiraCode,
 
-    #[serde(rename = "JetBrains Mono")]
+    #[serde(rename = "'JetBrains Mono', monospace")]
     JetBrainsMono,
 
-    #[serde(rename = "Inconsolata")]
+    #[serde(rename = "'Inconsolata', monospace")]
     Inconsolata,
 
-    #[serde(rename = "Cascadia Code")]
-    CascadiaCode,
-
-    #[serde(rename = "Terminus")]
-    Terminus,
+    #[serde(rename = "'Major Mono Display', monospace")]
+    MajorMonoDisplay,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]

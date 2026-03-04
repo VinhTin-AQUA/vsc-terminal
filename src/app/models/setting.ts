@@ -18,19 +18,14 @@ export const CURSOR_STYLES = {
 export type CursorStyleType = (typeof CURSOR_STYLES)[keyof typeof CURSOR_STYLES];
 
 export const FONT_FAMILIES = {
-    Courier: 'Courier',
+    Courier: "'Courier Prime', monospace",
     Consolas: 'Consolas',
-    Monaco: 'Monaco',
-    Menlo: 'Menlo',
-    DejaVuSansMono: 'DejaVu Sans Mono',
-    UbuntuMono: 'Ubuntu Mono',
-    LiberationMono: 'Liberation Mono',
-    SourceCodePro: 'Source Code Pro',
-    FiraCode: 'Fira Code',
-    JetBrainsMono: 'JetBrains Mono',
-    Inconsolata: 'Inconsolata',
-    CascadiaCode: 'Cascadia Code',
-    Terminus: 'Terminus',
+    UbuntuMono: "'Ubuntu Mono', monospace",
+    SourceCodePro: "'Source Code Pro', monospace",
+    FiraCode: "'Fira Code', monospace",
+    JetBrainsMono: "'JetBrains Mono', monospace",
+    Inconsolata: "'Inconsolata', monospace",
+    MajorMonoDisplay: "'Major Mono Display', monospace",
 } as const;
 export type FontFamilyType = (typeof FONT_FAMILIES)[keyof typeof FONT_FAMILIES];
 

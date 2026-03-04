@@ -103,7 +103,7 @@ export class TerminalModel {
         return newTerminal;
     }
 
-    open(el: HTMLDivElement) {
+    async open(el: HTMLDivElement) {
         this.terminal.open(el);
         this.fitAddon.fit();
         this.terminal.focus();
