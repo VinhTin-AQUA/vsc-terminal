@@ -51,10 +51,10 @@ export class SettingService {
         const themes = await firstValueFrom(
             this.http.get<Record<string, AppTheme>>('themes/themes.json'),
         );
-        
+
         this.appThemes.set(themes);
-        const selectedTheme: AppTheme = themes[settings.appThemeId];
-        this.applyThemeToDOM(selectedTheme);
+
+        this.applyThemeToDOM(settings.appThemeId);
 
         // terminal profiles
         const profiles = await invoke<Profile[]>(
@@ -83,15 +83,17 @@ export class SettingService {
     }
 
     async saveSettings() {
+        this.applyThemeToDOM(this.settings().appThemeId);
         const check = await invoke<Settings>(SettingsCommands.save_settings_command, {
             settings: this.settings(),
         });
     }
 
-    private applyThemeToDOM(theme: AppTheme) {
+    private applyThemeToDOM(themeId: string) {
         const root = document.documentElement;
+        const selectedTheme: AppTheme = this.appThemes()[themeId];
 
-        Object.entries(theme).forEach(([key, value]) => {
+        Object.entries(selectedTheme).forEach(([key, value]) => {
             root.style.setProperty(`--${key}`, value);
         });
     }

@@ -78,4 +78,9 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## Thêm terminal profile
 
-- vào src-tauri\src\constansts\shell_consts.rs để thêm
+- vào src-tauri/src/constansts/shell_consts.rs để thêm
+
+## Thêm theme
+
+- vào src/app/models/setting.ts thêm vào APP_THEMES
+- vào public/themes/themes.json để thêm theme tương ứng

@@ -1,110 +1,73 @@
-    <div class="animate-fade-in">
-        <!-- Modal -->
-        <div
-            class="w-150 max-h-[80vh] bg-white dark:bg-zinc-900 rounded-md shadow-2xl flex flex-col overflow-hidden"
-        >
-            <!-- HEADER (fixed) -->
-            <div
-                class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-700"
-            >
-                <h2 class="text-xl font-semibold text-zinc-800 dark:text-zinc-100">⚙ Settings</h2>
+<div class="settings-overlay">
+    <div class="settings-modal">
+        <!-- HEADER -->
+        <div class="settings-header">
+            <h2 class="settings-title">⚙ Settings</h2>
+            <app-button (buttonClick)="closeSettings()">✕</app-button>
+        </div>
 
-                <button
-                    (click)="closeSettings()"
-                    class="px-3 py-1 rounded-lg bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 transition"
-                >
-                    ✕
-                </button>
-            </div>
+        <!-- BODY -->
+        <div class="settings-body">
+            <div class="settings-grid">
+                <app-select
+                    label="Default Profile"
+                    [formField]="settingService.settingsForm.defaultProfileId"
+                    [options]="profileOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [value]="defaultProfile()?.name ?? ''"
+                ></app-select>
 
-            <!-- SCROLLABLE BODY -->
-            <div class="overflow-y-auto p-6 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <!-- DEFAULT PROFILE -->
-                    <app-select
-                        label="Default Profile"
-                        [formField]="settingService.settingsForm.defaultProfileId"
-                        [options]="profileOptions"
-                        optionLabel="label"
-                        optionValue="value"
-                        [value]="defaultProfile()?.name ?? ''"
-                    ></app-select>
+                <app-select
+                    label="Theme Colors"
+                    [formField]="settingService.settingsForm.appThemeId"
+                    [options]="appThemeOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [value]="settingService.settings().appThemeId"
+                ></app-select>
 
-                    <!-- THEME COLORS -->
-                    <app-select
-                        label="Theme Colors"
-                        [formField]="settingService.settingsForm.appThemeId"
-                        [options]="appThemeOptions"
-                        optionLabel="label"
-                        optionValue="value"
-                        [value]="settingService.settings().appThemeId"
-                    ></app-select>
+                <app-select
+                    label="Font Family"
+                    [formField]="settingService.settingsForm.terminalSettings.fontFamily"
+                    [options]="fontFamilieOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontFamily"
+                ></app-select>
 
-                    <!-- FONT FAMILY -->
-                    <app-select
-                        label="Font Family"
-                        [formField]="settingService.settingsForm.terminalSettings.fontFamily"
-                        [options]="fontFamilieOptions"
-                        optionLabel="label"
-                        optionValue="value"
-                        [value]="settingService.settingsForm.terminalSettings().value().fontFamily"
-                    ></app-select>
+                <app-number-input
+                    label="Font Size"
+                    [formField]="settingService.settingsForm.terminalSettings.fontSize"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontSize"
+                ></app-number-input>
 
-                    <!-- FONT SIZE -->
-                    <app-number-input
-                        label="Font Size"
-                        [formField]="settingService.settingsForm.terminalSettings.fontSize"
-                        [value]="settingService.settingsForm.terminalSettings().value().fontSize"
-                    ></app-number-input>
+                <app-number-input
+                    label="Font Weight"
+                    [formField]="settingService.settingsForm.terminalSettings.fontWeight"
+                    [value]="settingService.settingsForm.terminalSettings().value().fontWeight"
+                    [step]="100"
+                ></app-number-input>
 
-                    <!-- FONT WEIGHT -->
-                    <app-number-input
-                        label="Font Weight"
-                        [formField]="settingService.settingsForm.terminalSettings.fontWeight"
-                        [value]="settingService.settingsForm.terminalSettings().value().fontWeight"
-                        [step]="100"
-                    ></app-number-input>
+                <app-number-input
+                    label="Letter Spacing"
+                    [formField]="settingService.settingsForm.terminalSettings.letterSpacing"
+                    [value]="settingService.settingsForm.terminalSettings().value().letterSpacing"
+                    [step]="1"
+                ></app-number-input>
 
-                    <!-- LETTER SPACING -->
-                    <app-number-input
-                        label="Letter Spacing"
-                        [formField]="settingService.settingsForm.terminalSettings.letterSpacing"
-                        [value]="
-                            settingService.settingsForm.terminalSettings().value().letterSpacing
-                        "
-                        [step]="1"
-                    ></app-number-input>
+                <app-number-input
+                    label="Cursor Width"
+                    [formField]="settingService.settingsForm.terminalSettings.cursorWidth"
+                    [value]="settingService.settingsForm.terminalSettings().value().cursorWidth"
+                ></app-number-input>
 
-                    <!-- CURSOR WIDTH -->
-                    <app-number-input
-                        label="Cursor Width"
-                        [formField]="settingService.settingsForm.terminalSettings.cursorWidth"
-                        [value]="settingService.settingsForm.terminalSettings().value().cursorWidth"
-                    ></app-number-input>
-
-                    <!-- CURSOR STYLE -->
-                    <app-radio
-                        name="cursorStyle"
-                        [field]="settingService.settingsForm.terminalSettings.cursorStyle"
-                        [options]="cursorStyleOptions"
-                    ></app-radio>
-                </div>
-
-                <!-- BACKGROUND STYLE -->
-                <!-- <section class="space-y-2">
-                    <h3 class="section-title">Background Effect</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        @for (bg of backgrounds; track bg) {
-                            <button
-                               
-                                class="option-btn"
-                                [class.active]="settings().terminalSettings.background === bg"
-                            >
-                                {{ bg }}
-                            </button>
-                        }
-                    </div>
-                </section> -->
+                <app-radio
+                    name="cursorStyle"
+                    [field]="settingService.settingsForm.terminalSettings.cursorStyle"
+                    [options]="cursorStyleOptions"
+                ></app-radio>
             </div>
         </div>
     </div>
+</div>

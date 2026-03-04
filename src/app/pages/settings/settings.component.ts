@@ -17,10 +17,11 @@ import {
     FontFamilyType,
 } from '../../models/setting';
 import { TabManagerService } from '../../services/tab-manager.service';
+import { Button } from "../../components/button/button";
 
 @Component({
     selector: 'app-settings',
-    imports: [CommonModule, Select, NumberInput, Radio, FormField],
+    imports: [CommonModule, Select, NumberInput, Radio, FormField, Button],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.css',
 })

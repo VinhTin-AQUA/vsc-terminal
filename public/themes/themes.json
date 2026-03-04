@@ -1,49 +1,178 @@
 {
     "light": {
-        "foreground": "#000000",
-        "background": "#ffffff",
-        "black": "#000000",
-        "red": "#d32f2f",
-        "green": "#388e3c",
-        "yellow": "#fbc02d",
-        "blue": "#1976d2",
-        "magenta": "#7b1fa2",
-        "cyan": "#0097a7",
-        "white": "#eeeeee",
-        "brightBlack": "#616161",
-        "brightRed": "#ef5350",
-        "brightGreen": "#66bb6a",
-        "brightYellow": "#ffee58",
-        "brightBlue": "#42a5f5",
-        "brightMagenta": "#ab47bc",
-        "brightCyan": "#26c6da",
-        "brightWhite": "#ffffff",
-        "cursor": "#000000",
-        "cursorAccent": "#ffffff",
-        "highlight": "#cce5ff"
+        "background": "#FDFDFD",
+        "foreground": "#1F2328",
+
+        "black": "#24292F",
+        "red": "#CF222E",
+        "green": "#116329",
+        "yellow": "#9A6700",
+        "blue": "#0969DA",
+        "magenta": "#8250DF",
+        "cyan": "#1B7C83",
+        "white": "#6E7781",
+
+        "brightBlack": "#57606A",
+        "brightRed": "#A40E26",
+        "brightGreen": "#1A7F37",
+        "brightYellow": "#BF8700",
+        "brightBlue": "#218BFF",
+        "brightMagenta": "#A475F9",
+        "brightCyan": "#3192AA",
+        "brightWhite": "#8C959F",
+
+        "cursor": "#0969DA",
+        "cursorAccent": "#FFFFFF",
+
+        "selectionBackground": "#0969DA33",
+        "selectionForeground": "#1F2328",
+        "selectionInactiveBackground": "#B6C2CF66"
     },
     "dark": {
-        "id": "2",
-        "foreground": "#d8dee9",
-        "background": "#2e3440",
-        "black": "#3b4252",
-        "red": "#bf616a",
-        "green": "#a3be8c",
-        "yellow": "#ebcb8b",
-        "blue": "#81a1c1",
-        "magenta": "#b48ead",
-        "cyan": "#88c0d0",
-        "white": "#e5e9f0",
-        "brightBlack": "#4c566a",
-        "brightRed": "#bf616a",
-        "brightGreen": "#a3be8c",
-        "brightYellow": "#ebcb8b",
-        "brightBlue": "#81a1c1",
-        "brightMagenta": "#b48ead",
-        "brightCyan": "#8fbcbb",
-        "brightWhite": "#eceff4",
-        "cursor": "#ffffff",
-        "cursorAccent": "#000000",
-        "highlight": "#434c5e"
+        "background": "#0D1117",
+        "foreground": "#C9D1D9",
+
+        "black": "#484F58",
+        "red": "#FF7B72",
+        "green": "#3FB950",
+        "yellow": "#D29922",
+        "blue": "#58A6FF",
+        "magenta": "#BC8CFF",
+        "cyan": "#39C5CF",
+        "white": "#B1BAC4",
+
+        "brightBlack": "#6E7681",
+        "brightRed": "#FFA198",
+        "brightGreen": "#56D364",
+        "brightYellow": "#E3B341",
+        "brightBlue": "#79C0FF",
+        "brightMagenta": "#D2A8FF",
+        "brightCyan": "#56D4DD",
+        "brightWhite": "#F0F6FC",
+
+        "cursor": "#58A6FF",
+        "cursorAccent": "#0D1117",
+
+        "selectionBackground": "#58A6FF33",
+        "selectionForeground": "#FFFFFF",
+        "selectionInactiveBackground": "#30363D99"
+    },
+    "githubLight": {
+        "background": "#FFFFFF",
+        "foreground": "#24292F",
+
+        "black": "#24292F",
+        "red": "#CF222E",
+        "green": "#1A7F37",
+        "yellow": "#9A6700",
+        "blue": "#0969DA",
+        "magenta": "#8250DF",
+        "cyan": "#1B7C83",
+        "white": "#6E7781",
+
+        "brightBlack": "#57606A",
+        "brightRed": "#A40E26",
+        "brightGreen": "#2DA44E",
+        "brightYellow": "#BF8700",
+        "brightBlue": "#218BFF",
+        "brightMagenta": "#A475F9",
+        "brightCyan": "#3192AA",
+        "brightWhite": "#8C959F",
+
+        "cursor": "#0969DA",
+        "cursorAccent": "#FFFFFF",
+
+        "selectionBackground": "#0969DA33",
+        "selectionForeground": "#24292F",
+        "selectionInactiveBackground": "#D0D7DE80"
+    },
+
+    "githubDark": {
+        "background": "#0D1117",
+        "foreground": "#C9D1D9",
+
+        "black": "#484F58",
+        "red": "#FF7B72",
+        "green": "#3FB950",
+        "yellow": "#D29922",
+        "blue": "#58A6FF",
+        "magenta": "#BC8CFF",
+        "cyan": "#39C5CF",
+        "white": "#B1BAC4",
+
+        "brightBlack": "#6E7681",
+        "brightRed": "#FFA198",
+        "brightGreen": "#56D364",
+        "brightYellow": "#E3B341",
+        "brightBlue": "#79C0FF",
+        "brightMagenta": "#D2A8FF",
+        "brightCyan": "#56D4DD",
+        "brightWhite": "#F0F6FC",
+
+        "cursor": "#58A6FF",
+        "cursorAccent": "#0D1117",
+
+        "selectionBackground": "#58A6FF33",
+        "selectionForeground": "#FFFFFF",
+        "selectionInactiveBackground": "#30363D99"
+    },
+
+    "dracula": {
+        "background": "#282A36",
+        "foreground": "#F8F8F2",
+
+        "black": "#21222C",
+        "red": "#FF5555",
+        "green": "#50FA7B",
+        "yellow": "#F1FA8C",
+        "blue": "#BD93F9",
+        "magenta": "#FF79C6",
+        "cyan": "#8BE9FD",
+        "white": "#F8F8F2",
+
+        "brightBlack": "#6272A4",
+        "brightRed": "#FF6E6E",
+        "brightGreen": "#69FF94",
+        "brightYellow": "#FFFFA5",
+        "brightBlue": "#D6ACFF",
+        "brightMagenta": "#FF92DF",
+        "brightCyan": "#A4FFFF",
+        "brightWhite": "#FFFFFF",
+
+        "cursor": "#F8F8F2",
+        "cursorAccent": "#282A36",
+
+        "selectionBackground": "#44475A",
+        "selectionForeground": "#F8F8F2",
+        "selectionInactiveBackground": "#44475A99"
+    },
+    "monokai": {
+        "background": "#272822",
+        "foreground": "#F8F8F2",
+
+        "black": "#272822",
+        "red": "#F92672",
+        "green": "#A6E22E",
+        "yellow": "#F4BF75",
+        "blue": "#66D9EF",
+        "magenta": "#AE81FF",
+        "cyan": "#A1EFE4",
+        "white": "#F8F8F2",
+
+        "brightBlack": "#75715E",
+        "brightRed": "#FF6188",
+        "brightGreen": "#B6F05E",
+        "brightYellow": "#FFD866",
+        "brightBlue": "#78DCE8",
+        "brightMagenta": "#AB9DF2",
+        "brightCyan": "#A4FFFF",
+        "brightWhite": "#FFFFFF",
+
+        "cursor": "#F8F8F0",
+        "cursorAccent": "#272822",
+
+        "selectionBackground": "#49483E",
+        "selectionForeground": "#F8F8F2",
+        "selectionInactiveBackground": "#49483E99"
     }
 }

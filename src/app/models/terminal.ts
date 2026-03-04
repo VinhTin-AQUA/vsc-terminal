@@ -24,7 +24,8 @@ export class TerminalModel {
         this.active = false;
 
         this.terminal = new Terminal({
-            theme: { ...theme },
+            theme: { ...theme, },
+            
             allowProposedApi: true,
             allowTransparency: true,
             drawBoldTextInBrightColors: true,
@@ -99,7 +100,6 @@ export class TerminalModel {
     clone(theme: AppTheme, terminalSettings: TerminalSettings) {
         const newTerminal: TerminalModel = new TerminalModel(theme, terminalSettings);
         newTerminal.id = crypto.randomUUID().toString();
-
         return newTerminal;
     }
 
@@ -130,7 +130,7 @@ export class TerminalModel {
     }
 
     private async handleInput(data: string) {
-        await invoke(PtyCommands.write_terminal, { terminalId: this.id, data: data });
+        await invoke(PtyCommands.write_terminal, { terminalId: this.id, data:  data });
     }
 
     private resizeXterm() {

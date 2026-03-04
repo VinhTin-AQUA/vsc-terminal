@@ -42,6 +42,8 @@ impl TerminalSession {
             cmd.env("TERM", "xterm-256color");
         }
 
+        cmd.env("TERM", "xterm-256color");
+
         let _child = pair
             .slave
             .spawn_command(cmd)
