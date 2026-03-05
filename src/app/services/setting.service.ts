@@ -3,7 +3,7 @@ import { AppTheme, AppThemeType, Profile, Settings } from '../models/setting';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { invoke } from '@tauri-apps/api/core';
-import { SettingsCommands, TerminalProfileCommands } from '../enums/tauri-command';
+import { SettingsCommands, TerminalProfileCommands } from '../constants/tauri-command';
 import { disabled, form, min, max } from '@angular/forms/signals';
 
 @Injectable({

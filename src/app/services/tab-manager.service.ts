@@ -3,7 +3,7 @@ import { Tab } from '../models/tab';
 import { TerminalModel } from '../models/terminal';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
-import { PtyCommands } from '../enums/tauri-command';
+import { PtyCommands } from '../constants/tauri-command';
 import { SettingService } from './setting.service';
 
 @Injectable({

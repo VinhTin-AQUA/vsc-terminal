@@ -3,7 +3,7 @@ import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { invoke } from '@tauri-apps/api/core';
 import { debounceTime, Subject } from 'rxjs';
-import { PtyCommands } from '../enums/tauri-command';
+import { PtyCommands } from '../constants/tauri-command';
 import { AppTheme, Profile, TerminalSettings } from './setting';
 
 export class TerminalModel {
