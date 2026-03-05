@@ -3,10 +3,10 @@ use crate::constansts::shell_consts::{LINUX_SHELL_LIST, WINDOWS_SHELL_LIST};
 pub fn get_default_shell_id() -> String {
     #[cfg(target_os = "windows")]
     {
-        if let Ok(shell) = std::env::var("COMSPEC") {
+        if let Ok(shell_name) = std::env::var("COMSPEC") {
             let r = WINDOWS_SHELL_LIST
                 .iter()
-                .find(|shell| shell.id == shell)
+                .find(|shell| shell.id == shell_name)
                 .map(|shell| shell.command.to_string())
                 .unwrap_or("bash".to_string());
 
