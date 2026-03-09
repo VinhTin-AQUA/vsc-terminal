@@ -1,86 +1,107 @@
-# VscTerminal
+# VS Code Terminal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+VS Code Terminal is a lightweight desktop terminal application inspired by the integrated terminal in Visual Studio Code.  
+It is built using **Tauri**, **Angular**, and **TailwindCSS** to provide a fast, modern, and cross-platform terminal experience.
 
-## Development server
+The goal of this project is to recreate the familiar developer workflow of the VS Code terminal while keeping the application lightweight and responsive.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## Demo
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Terminal Preview
 
-## Code scaffolding
+![Demo](docs/demo.png)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## Features
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- VS Code–inspired terminal interface
+- Lightweight desktop app powered by Tauri
+- Modern frontend built with Angular
+- Clean and responsive UI with TailwindCSS
+- Cross-platform support (Windows, Linux)
+- Fast startup and low memory usage
+- Simple and developer-friendly architecture
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## Tech Stack
 
-To build the project run:
+- **Tauri** – Desktop application framework
+- **Angular** – Frontend framework
+- **TailwindCSS** – Styling
+- **Rust** – Backend runtime used by Tauri
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Installation
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Clone the repository
 
 ```bash
-ng e2e
+git clone https://github.com/VinhTin-AQUA/vsc-terminal
+cd vsc-terminal
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Install dependencies
 
-## Additional Resources
+```bash
+npm install
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Run in development mode
 
-## bổ sung font
+```bash
+npm run tauri dev
+```
 
-- trong src-tauri/src/models/settings.rs thêm font vào FontFamilyType, tên đầy đủ của font khi sử dụng là: "'Major Mono Display', monospace"
-- trong src/app/models/setting.ts thêm font vào FONT_FAMILIES, tên font đầy đủ khi sử dụng là: "'Major Mono Display', monospace"
-- vào googlefont tải file font chữ về, chỉ chọn monospace, lưu vào public/fonts
-- vào src/styles.css khai báo, khai báo thì không cần ghi monospace
+---
 
-    ```css
-    @font-face {
-        font-family: 'Major Mono Display';
-        src: url('/fonts/MajorMonoDisplay-Regular.ttf') format('truetype');
-        font-weight: 400;
-        font-style: normal;
-    }
-    ```
+## Build
 
-- Sử dụng cần ghi rõ monospace: font-family: "'Major Mono Display', monospace"
+To build the desktop application:
 
-## Thêm terminal profile
+```bash
+# Windows
+npm run tauri build -- --target x86_64-pc-windows-msvc
+npm run tauri build -- --no-bundle --target x86_64-pc-windows-msvc
 
-- vào src-tauri/src/constansts/shell_consts.rs để thêm
+# Linux (run on Linux)
+npm run tauri build
+```
 
-## Thêm theme
+---
 
-- vào src/app/models/setting.ts thêm vào APP_THEMES
-- vào public/themes/themes.json để thêm theme tương ứng
+## Development
+
+Run Angular only:
+
+```bash
+ng g
+```
+
+Run the full desktop application:
+
+```bash
+npm run tauri dev
+```
+
+---
+
+## Roadmap
+
+Planned features:
+
+- Terminal tabs
+- Split terminal view
+- Shell customization
+- Theme support
+- Command history
+
+---
+
+## Inspiration
+
+This project is inspired by the integrated terminal experience in Visual Studio Code.
